@@ -12,6 +12,9 @@ var destruction_timer: Timer
 @abstract func _interact(event: InputEvent, interact_from: Variant)
 
 signal destroyed()
+func destroy(by_player: bool):
+	## Impliment functionality to execute when the object is destroyed.
+	pass
 
 func interact(event: InputEvent, interact_from: Variant):
 	if event.is_action("destroy_object"):
@@ -58,4 +61,5 @@ func do_destroy(event: InputEvent, strength: float):
 		destruction_timer.stop()
 
 func _on_timer_timeout() -> void:
-	print("Destroy")
+	destroy(true)
+	destroyed.emit()

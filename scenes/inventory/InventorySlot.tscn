@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://cotnh4leyd0uw"]
+
+[ext_resource type="Script" uid="uid://cxrj4qru7enic" path="res://scenes/inventory/inventory_slot.gd" id="1_75nc8"]
+[ext_resource type="Script" uid="uid://duas3ddibdutp" path="res://scenes/inventory/inventory_slot_panel.gd" id="2_75nc8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xfjmo"]
+bg_color = Color(0.6, 0.6, 0.6, 0.53333336)
+
+[node name="InventorySlot" type="MarginContainer" unique_id=417248114]
+custom_minimum_size = Vector2(60, 60)
+custom_maximum_size = Vector2(60, 60)
+offset_right = 60.0
+offset_bottom = 60.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+script = ExtResource("1_75nc8")
+
+[node name="InventorySlotPanel" type="Panel" parent="." unique_id=858787304]
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+offset_transform_visual_only = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_xfjmo")
+script = ExtResource("2_75nc8")
+
+[connection signal="item_dropped" from="InventorySlotPanel" to="." method="_on_inventory_slot_panel_item_dropped"]
+[connection signal="mouse_entered" from="InventorySlotPanel" to="InventorySlotPanel" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="InventorySlotPanel" to="InventorySlotPanel" method="_on_mouse_exited"]

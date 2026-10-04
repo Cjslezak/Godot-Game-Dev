@@ -1,0 +1,119 @@
+[gd_scene format=3 uid="uid://kbqdge1snuej"]
+
+[ext_resource type="Texture2D" uid="uid://clpxqnij8w2vc" path="res://icon.svg" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://byl3m2h35hvo3" path="res://scenes/player/player.gd" id="1_onrkg"]
+[ext_resource type="Script" uid="uid://c5i0gh2om43ne" path="res://scenes/player/camera_2d.gd" id="3_i3pqv"]
+[ext_resource type="Script" uid="uid://5h2bfgvqyuud" path="res://scenes/player/inventory_window.gd" id="5_75vfm"]
+[ext_resource type="PackedScene" uid="uid://dl7o8mfeex3t" path="res://scenes/inventory/InventoryHandler.tscn" id="5_p47bc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mwuxh"]
+size = Vector2(64, 64)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mwuxh"]
+radius = 500.0
+
+[node name="Player" type="CharacterBody2D" unique_id=1095626347]
+collision_mask = 7
+script = ExtResource("1_onrkg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1647571961]
+top_level = true
+shape = SubResource("RectangleShape2D_mwuxh")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=539745322]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_4flbx")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1720261600]
+limit_enabled = false
+limit_left = 0
+limit_top = 0
+limit_right = 1920
+limit_bottom = 1080
+script = ExtResource("3_i3pqv")
+
+[node name="InteractArea" type="Area2D" parent="." unique_id=440723616 groups=["playerInteractArea"]]
+collision_layer = 8
+collision_mask = 6
+
+[node name="InteractShape" type="CollisionShape2D" parent="InteractArea" unique_id=1258079165]
+shape = SubResource("CircleShape2D_mwuxh")
+debug_color = Color(0.75838614, 0.222787, 0.96308786, 0.41960785)
+
+[node name="UI_Layer" type="CanvasLayer" parent="." unique_id=638456876]
+offset = Vector2(0, -50)
+transform = Transform2D(1, 0, 0, 1, 0, -50)
+
+[node name="PanelContainer" type="PanelContainer" parent="UI_Layer" unique_id=467900095]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -318.0
+offset_top = -63.0
+offset_right = 318.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI_Layer/PanelContainer" unique_id=989669856]
+layout_mode = 2
+
+[node name="GridHotbar" type="GridContainer" parent="UI_Layer/PanelContainer/MarginContainer" unique_id=450813847]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 10
+
+[node name="HotbarInventory" parent="." unique_id=1104222237 instance=ExtResource("5_p47bc")]
+grid_container = NodePath("../UI_Layer/PanelContainer/MarginContainer/GridHotbar")
+columns = 10
+allow_drag = false
+only_strict_slots = true
+
+[node name="Inventory" parent="." unique_id=1435636444 instance=ExtResource("5_p47bc")]
+grid_container = NodePath("../InventoryWindow/PanelContainer/MarginContainer/InventoryLayout/GridInventory")
+initial_contents = Dictionary[int, int]({
+3: 1
+})
+
+[node name="InventoryWindow" type="PopupPanel" parent="." unique_id=491057858]
+oversampling_override = 1.0
+initial_position = 2
+visible = true
+script = ExtResource("5_75vfm")
+
+[node name="PanelContainer" type="PanelContainer" parent="InventoryWindow" unique_id=256581334]
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 0.04
+anchor_right = 0.96
+anchor_bottom = 0.96
+grow_horizontal = 0
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="InventoryWindow/PanelContainer" unique_id=879806738]
+layout_mode = 2
+
+[node name="InventoryLayout" type="HBoxContainer" parent="InventoryWindow/PanelContainer/MarginContainer" unique_id=1453572992]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="GridInventory" type="GridContainer" parent="InventoryWindow/PanelContainer/MarginContainer/InventoryLayout" unique_id=477089054]
+layout_mode = 2
+
+[node name="InventorySeperator" type="VSeparator" parent="InventoryWindow/PanelContainer/MarginContainer/InventoryLayout" unique_id=1653641808]
+unique_name_in_owner = true
+layout_mode = 2
+
+[connection signal="area_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
+[connection signal="area_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
+[connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
+[connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
+[connection signal="input_event" from="InteractArea" to="." method="_on_interact_area_input_event"]
+[connection signal="contents_changed" from="Inventory" to="." method="_on_inventory_contents_changed"]
+[connection signal="hotbar_pressed" from="Inventory" to="." method="_on_inventory_hotbar_pressed"]
+[connection signal="item_clicked" from="Inventory" to="." method="_on_inventory_item_clicked"]
+[connection signal="popup_hide" from="InventoryWindow" to="." method="_on_inventory_window_popup_hide"]

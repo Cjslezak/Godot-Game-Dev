@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CraftingRecipe" format=3 uid="uid://crkjaktprjk4p"]
+
+[ext_resource type="Script" uid="uid://7l500u32wmjd" path="res://custom_resources/crafting_recipe.gd" id="1_5fk56"]
+
+[resource]
+script = ExtResource("1_5fk56")
+ingredients = Dictionary[int, int]({
+1: 2
+})
+results = Dictionary[int, int]({
+3: 1
+})
+time = 5
+metadata/_custom_type_script = "uid://7l500u32wmjd"

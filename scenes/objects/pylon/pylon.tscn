@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://blbiav41hvlat"]
+
+[ext_resource type="Script" uid="uid://bjh4wnu8py2jg" path="res://scenes/objects/pylon/pylon.gd" id="1_qdrfa"]
+[ext_resource type="Texture2D" uid="uid://5go2g1l8mnvq" path="res://pixel_art/Pixel Orb.png" id="2_bgskx"]
+[ext_resource type="Script" uid="uid://cjg6qay35jf" path="res://scenes/objects/pylon/orb_body.gd" id="2_h8h5c"]
+[ext_resource type="Script" uid="uid://daqxd2j0y1xeu" path="res://custom_resources/object_properties.gd" id="2_iioad"]
+[ext_resource type="Texture2D" uid="uid://clwpikt4a17v3" path="res://pixel_art/Pixel Pylon.png" id="4_h8h5c"]
+[ext_resource type="PackedScene" uid="uid://dl7o8mfeex3t" path="res://scenes/inventory/InventoryHandler.tscn" id="5_qfd15"]
+[ext_resource type="PackedScene" uid="uid://b1q7j8ok3o0mr" path="res://scenes/inventory/InventoryPassHandler.tscn" id="6_8atv6"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qfd15"]
+load_path = "res://.godot/imported/Pixel Orb.png-c3744e261df03e9bfdf59051a2eb4f7b.ctex"
+
+[sub_resource type="Resource" id="Resource_y5fs1"]
+script = ExtResource("2_iioad")
+drops = Dictionary[int, int]({
+4: 1
+})
+metadata/_custom_type_script = "uid://daqxd2j0y1xeu"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mwuxh"]
+radius = 26.0
+
+[node name="Pylon" type="Node2D" unique_id=1830958759]
+script = ExtResource("1_qdrfa")
+orb_texture = SubResource("CompressedTexture2D_qfd15")
+properties = SubResource("Resource_y5fs1")
+
+[node name="Inventory" parent="." unique_id=1104222237 instance=ExtResource("5_qfd15")]
+grid_container = NodePath("../InventoryPassHandler/InventoryGrid")
+columns = 2
+inventory_size = 4
+
+[node name="InventoryPassHandler" parent="." unique_id=1327303311 instance=ExtResource("6_8atv6")]
+stack_transfer_target_path = NodePath("../Inventory")
+stack_transfer_sources = Array[NodePath]([NodePath("../Inventory")])
+
+[node name="InventoryGrid" type="GridContainer" parent="InventoryPassHandler" unique_id=625535650]
+
+[node name="OrbBody" type="AnimatableBody2D" parent="." unique_id=915119433]
+collision_layer = 2
+collision_mask = 3
+input_pickable = true
+script = ExtResource("2_h8h5c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OrbBody" unique_id=232196692]
+shape = SubResource("CircleShape2D_mwuxh")
+
+[node name="OrbSprite" type="Sprite2D" parent="OrbBody" unique_id=1175501308]
+texture = ExtResource("2_bgskx")
+
+[node name="PylonBody" type="StaticBody2D" parent="." unique_id=1865640964]
+collision_layer = 2
+collision_mask = 3
+input_pickable = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PylonBody" unique_id=1246051539]
+position = Vector2(0.61300033, 72.42067)
+polygon = PackedVector2Array(6.3869996, -38.42067, 6.3869996, -8.42067, 14.387, 5.5793304, 19.387, 7.5793304, 19.387, 10.57933, 14.387, 12.579327, 5.3869996, 16.57933, -6.6130004, 16.579327, -20.613, 10.579327, -20.613, 7.5793266, -15.613, 5.5793266, -7.6130004, -8.420673, -7.6130004, -38.420673, -4.6130004, -40.42067, -0.61300033, -41.42067, 3.3869996, -40.42067)
+
+[node name="Sprite2D" type="Sprite2D" parent="PylonBody" unique_id=1331774515]
+position = Vector2(0, 60)
+texture = ExtResource("4_h8h5c")

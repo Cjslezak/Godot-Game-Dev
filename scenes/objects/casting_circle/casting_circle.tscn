@@ -1,0 +1,96 @@
+[gd_scene format=3 uid="uid://dpsg256vjo6tf"]
+
+[ext_resource type="Script" uid="uid://ythoa7wfxvg1" path="res://scenes/objects/casting_circle/casting_circle.gd" id="1_fobci"]
+[ext_resource type="Texture2D" uid="uid://c2b36ojc1euoa" path="res://pixel_art/Pixel Pentagram.png" id="1_xrefp"]
+[ext_resource type="Script" uid="uid://daqxd2j0y1xeu" path="res://custom_resources/object_properties.gd" id="2_gjog0"]
+[ext_resource type="Script" uid="uid://7l500u32wmjd" path="res://custom_resources/crafting_recipe.gd" id="3_cvky2"]
+[ext_resource type="PackedScene" uid="uid://b1q7j8ok3o0mr" path="res://scenes/inventory/InventoryPassHandler.tscn" id="3_h68y2"]
+[ext_resource type="Resource" uid="uid://crkjaktprjk4p" path="res://custom_resources/crafting_recipes/casting_circle/casting_circle.tres" id="4_cvky2"]
+[ext_resource type="PackedScene" uid="uid://ds5ixlqvc5w" path="res://scenes/inventory/CraftProgressBar.tscn" id="4_lk5l5"]
+[ext_resource type="Resource" uid="uid://ci5q3yhdkjcop" path="res://custom_resources/crafting_recipes/casting_circle/pylon.tres" id="5_73u7c"]
+[ext_resource type="PackedScene" uid="uid://dl7o8mfeex3t" path="res://scenes/inventory/InventoryHandler.tscn" id="5_cvky2"]
+[ext_resource type="PackedScene" uid="uid://flspi6f57g5p" path="res://scenes/inventory/CraftHandler.tscn" id="6_73u7c"]
+
+[sub_resource type="Resource" id="Resource_73u7c"]
+script = ExtResource("2_gjog0")
+drops = Dictionary[int, int]({
+3: 1
+})
+metadata/_custom_type_script = "uid://daqxd2j0y1xeu"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mwuxh"]
+radius = 32.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gjog0"]
+
+[node name="CastingCircle" type="Node2D" unique_id=544357769]
+script = ExtResource("1_fobci")
+properties = SubResource("Resource_73u7c")
+
+[node name="CraftHandler" parent="." unique_id=525796048 instance=ExtResource("6_73u7c")]
+recipes = Array[ExtResource("3_cvky2")]([ExtResource("4_cvky2"), ExtResource("5_73u7c")])
+input_inventory_handler = NodePath("../InputSlotsHandler")
+output_inventory_handler = NodePath("../OutputSlotsHandler")
+recipe_selection_grid = NodePath("../InventoryPassHandler/TabContainer/Select Recipe/RecipeGrid")
+progress_bar_path = NodePath("../InventoryPassHandler/TabContainer/Crafting/HBoxContainer/CraftProgressBar")
+start_button_path = NodePath("../InventoryPassHandler/TabContainer/Crafting/Button")
+
+[node name="InputSlotsHandler" parent="." unique_id=1104222237 instance=ExtResource("5_cvky2")]
+grid_container = NodePath("../InventoryPassHandler/TabContainer/Crafting/HBoxContainer/GridContainer")
+columns = 1
+inventory_size = 3
+
+[node name="OutputSlotsHandler" parent="." unique_id=1497643403 instance=ExtResource("5_cvky2")]
+grid_container = NodePath("../InventoryPassHandler/TabContainer/Crafting/HBoxContainer/GridContainer2")
+columns = 1
+inventory_size = 3
+allow_drop = false
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1428228527]
+texture = ExtResource("1_xrefp")
+
+[node name="InteractArea" type="Area2D" parent="." unique_id=1656644503]
+collision_layer = 2
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=9413123]
+shape = SubResource("CircleShape2D_mwuxh")
+
+[node name="InventoryPassHandler" parent="." unique_id=29001832 instance=ExtResource("3_h68y2")]
+stack_transfer_target_path = NodePath("../InputSlotsHandler")
+stack_transfer_sources = Array[NodePath]([NodePath("../InputSlotsHandler"), NodePath("../OutputSlotsHandler")])
+
+[node name="TabContainer" type="TabContainer" parent="InventoryPassHandler" unique_id=564253546]
+offset_right = 8.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_gjog0")
+current_tab = 0
+clip_tabs = false
+
+[node name="Crafting" type="VBoxContainer" parent="InventoryPassHandler/TabContainer" unique_id=1782700951]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InventoryPassHandler/TabContainer/Crafting" unique_id=821117108]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="InventoryPassHandler/TabContainer/Crafting/HBoxContainer" unique_id=1679779185]
+layout_mode = 2
+
+[node name="CraftProgressBar" parent="InventoryPassHandler/TabContainer/Crafting/HBoxContainer" unique_id=435555979 instance=ExtResource("4_lk5l5")]
+layout_mode = 2
+
+[node name="GridContainer2" type="GridContainer" parent="InventoryPassHandler/TabContainer/Crafting/HBoxContainer" unique_id=1615550659]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="InventoryPassHandler/TabContainer/Crafting" unique_id=913714285]
+layout_mode = 2
+text = "Start Craft"
+
+[node name="Select Recipe" type="MarginContainer" parent="InventoryPassHandler/TabContainer" unique_id=662100312]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="RecipeGrid" type="GridContainer" parent="InventoryPassHandler/TabContainer/Select Recipe" unique_id=816980752]
+layout_mode = 2

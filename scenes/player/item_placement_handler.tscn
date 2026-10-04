@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cleac6tup6n6b"]
+
+[ext_resource type="Script" uid="uid://dd7q7xd1a7kjk" path="res://scenes/player/item_placement_handler.gd" id="1_k6h6y"]
+
+[node name="ItemPlacementHandler" type="Control" unique_id=312680587]
+visibility_layer = 524288
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_k6h6y")

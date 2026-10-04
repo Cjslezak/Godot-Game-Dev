@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dodseikq60o6b"]
+
+[ext_resource type="Script" uid="uid://cfpi4my4326xt" path="res://scenes/objects/destructable.gd" id="1_y5fs1"]
+
+[node name="Destructable" type="Node2D" unique_id=1224533354 groups=["destructable"]]
+script = ExtResource("1_y5fs1")

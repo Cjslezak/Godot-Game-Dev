@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b1q7j8ok3o0mr"]
+
+[ext_resource type="Script" uid="uid://dm7mu4671wbk0" path="res://scenes/inventory/inventory_pass_handler.gd" id="1_1l661"]
+
+[node name="InventoryPassHandler" type="Node" unique_id=29001832]
+script = ExtResource("1_1l661")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=298748404]

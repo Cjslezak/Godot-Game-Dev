@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://bqmn5chbeqq0x"]
+
+[ext_resource type="Script" uid="uid://6y63u1r66xwt" path="res://scenes/inventory/item_stack.gd" id="1_6bhdc"]
+[ext_resource type="Texture2D" uid="uid://clpxqnij8w2vc" path="res://icon.svg" id="2_l47k2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_mrqgh"]
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.72156864)
+
+[node name="ItemStack" type="MarginContainer" unique_id=73454008]
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(50, 50)
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_6bhdc")
+
+[node name="Image" type="TextureRect" parent="." unique_id=1854983728]
+propagate_maximum_size = true
+layout_mode = 2
+texture = ExtResource("2_l47k2")
+expand_mode = 4
+
+[node name="Qty" type="Label" parent="." unique_id=1078449230]
+layout_mode = 2
+size_flags_vertical = 1
+text = "0"
+label_settings = SubResource("LabelSettings_mrqgh")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

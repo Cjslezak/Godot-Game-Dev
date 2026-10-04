@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://flspi6f57g5p"]
+
+[ext_resource type="Script" uid="uid://boadlidvleulh" path="res://scenes/inventory/craft_handler.gd" id="1_q0s42"]
+
+[node name="CraftHandler" type="Node" unique_id=525796048]
+script = ExtResource("1_q0s42")
+
+[node name="Timer" type="Timer" parent="." unique_id=1475839313]
+one_shot = true
+ignore_time_scale = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://canwx5qjwewxj"]
+
+[ext_resource type="Script" uid="uid://dkdfjvvhcxx3e" path="res://scenes/objects/world_object.gd" id="1_ix2ob"]
+[ext_resource type="Texture2D" uid="uid://clpxqnij8w2vc" path="res://icon.svg" id="1_lbf83"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mwuxh"]
+size = Vector2(128, 128)
+
+[node name="WorldObject" type="StaticBody2D" unique_id=902339281]
+collision_layer = 2
+collision_mask = 3
+input_pickable = true
+script = ExtResource("1_ix2ob")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=121926729]
+texture = ExtResource("1_lbf83")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=776197898]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_mwuxh")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

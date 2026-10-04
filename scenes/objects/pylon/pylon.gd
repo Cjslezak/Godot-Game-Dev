@@ -7,7 +7,7 @@ extends Interactable
 func _ready() -> void:
 	$OrbBody/OrbSprite.texture = orb_texture
 	$OrbBody.animation_rate = bob_rate
-	ready()
+	#ready()
 
 func _interact(event: InputEvent, source):
 	source = source as Player

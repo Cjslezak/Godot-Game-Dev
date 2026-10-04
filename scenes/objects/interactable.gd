@@ -1,13 +1,15 @@
 @abstract
+extends Node2D
 class_name Interactable
 
 var _mouse_over = false
+var in_range = false
 
 @abstract func _interact(event: InputEvent, interact_from: Variant)
 
 func interact(event: InputEvent, interact_from: Variant):
-	if event.is_action("destroy_object"):
-		do_destroy(event, 1)
+	#if event.is_action("destroy_object"):
+		#do_destroy(event, 1)
 	
 	_interact(event, interact_from)
 
@@ -33,4 +35,3 @@ func _on_mouse_entered():
 func _on_mouse_exit():
 	modulate = Color(1.0, 1.0, 1.0, 1.0)
 	_mouse_over = false
-	

@@ -8,18 +8,19 @@ var _mouse_over = false
 var in_range = false
 var destroying: bool = false
 var destruction_timer: Timer
+var destruction_source: Variant
 
 @abstract func _interact(event: InputEvent, interact_from: Variant)
 
 signal destroyed()
-func destroy(by_player: bool):
+func destroy(by_player: bool, source: Variant):
 	## Impliment functionality to execute when the object is destroyed.
 	pass
 
 func interact(event: InputEvent, interact_from: Variant):
 	if event.is_action("destroy_object"):
 		if is_in_group(&"destructable"):
-			do_destroy(event, 1)
+			do_destroy(event, 1, interact_from)
 	
 	_interact(event, interact_from)
 
@@ -51,15 +52,16 @@ func _on_mouse_exit():
 	modulate = Color(1.0, 1.0, 1.0, 1.0)
 	_mouse_over = false
 
-func do_destroy(event: InputEvent, strength: float):
+func do_destroy(event: InputEvent, strength: float, source: Variant):
 	if event.is_action_pressed("destroy_object"):
 		destroying = true
 		destruction_timer.wait_time = properties.hardness / strength
 		destruction_timer.start()
+		destruction_source = source
 	elif event.is_action_released("destroy_object"):
 		destroying = false
 		destruction_timer.stop()
 
 func _on_timer_timeout() -> void:
-	destroy(true)
+	destroy(true, destruction_source)
 	destroyed.emit()

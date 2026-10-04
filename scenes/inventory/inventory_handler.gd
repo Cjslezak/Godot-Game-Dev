@@ -174,8 +174,8 @@ func append_stack(stack: Types.ResourceStack):
 		slots[strict_slots[stack.type]].add_item(stack_object)
 		return
 
-func add_item(item: Types.Item):
-	contents.append(Types.ResourceStack.new(item, 1))
+func add_item(item: Types.Item, qty: int = 1):
+	contents.append(Types.ResourceStack.new(item, qty))
 	contents_updated()
 	
 func add_qty(type: Types.Item, qty: int):

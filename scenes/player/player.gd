@@ -95,8 +95,8 @@ func _on_interact_area_input_event(_viewport: Node, event: InputEvent, _shape_id
 				interact_with.owner.interact(event, self)
 				interacted.append(interact_with.owner)
 
-func on_gather_resource(kind: Types.Item):
-	$Inventory.add_item(kind)
+func on_gather_resource(kind: Types.Item, qty: int = 1):
+	$Inventory.add_item(kind, qty)
 
 func _on_inventory_contents_changed() -> void:
 	$HotbarInventory.set_contents($Inventory.contents)
@@ -129,5 +129,6 @@ func _on_interact_area_body_entered(body: Node2D) -> void:
 		body.owner.in_range = true
 
 func _on_interact_area_body_exited(body: Node2D) -> void:
-	if body.owner.is_in_group("interactable"):
-		body.owner.in_range = false
+	if body.owner != null: # Required since slot gets triggered on object removal. 
+		if body.owner.is_in_group("interactable"):
+			body.owner.in_range = false

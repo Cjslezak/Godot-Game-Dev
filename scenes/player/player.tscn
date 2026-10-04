@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://clpxqnij8w2vc" path="res://icon.svg" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://byl3m2h35hvo3" path="res://scenes/player/player.gd" id="1_onrkg"]
 [ext_resource type="Script" uid="uid://c5i0gh2om43ne" path="res://scenes/player/camera_2d.gd" id="3_i3pqv"]
+[ext_resource type="Script" uid="uid://bqob783aqgs8j" path="res://scenes/player/mouse_container.gd" id="4_75vfm"]
 [ext_resource type="Script" uid="uid://5h2bfgvqyuud" path="res://scenes/player/inventory_window.gd" id="5_75vfm"]
 [ext_resource type="PackedScene" uid="uid://dl7o8mfeex3t" path="res://scenes/inventory/InventoryHandler.tscn" id="5_p47bc"]
 
@@ -65,6 +66,17 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 columns = 10
+
+[node name="MouseContainer" type="PanelContainer" parent="UI_Layer" unique_id=1607561096]
+process_mode = 3
+process_priority = -2
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_75vfm")
+
+[node name="ProgressBar" type="ProgressBar" parent="UI_Layer/MouseContainer" unique_id=716254689]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
 
 [node name="HotbarInventory" parent="." unique_id=1104222237 instance=ExtResource("5_p47bc")]
 grid_container = NodePath("../UI_Layer/PanelContainer/MarginContainer/GridHotbar")

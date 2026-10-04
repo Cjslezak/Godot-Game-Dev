@@ -8,6 +8,7 @@ var screen_size
 var has_other_inventory = false
 var inventory_currently_open = false
 var other_inventory_handler: InventoryPassHandler = null
+var progress_source: Node = null
 
 signal start_placing_object(handler: ItemPlacementHandler)
 
@@ -16,6 +17,11 @@ func _ready() -> void:
 	screen_size = get_viewport_rect().size
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	$Camera2D.zoom_rate = zoom_rate
+
+func _process(delta: float) -> void:
+	if progress_source is Timer:
+		var percent = (progress_source.wait_time - progress_source.time_left) / progress_source.wait_time * 100
+		$UI_Layer/MouseContainer.show_progress(percent)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
@@ -132,3 +138,10 @@ func _on_interact_area_body_exited(body: Node2D) -> void:
 	if body.owner != null: # Required since slot gets triggered on object removal. 
 		if body.owner.is_in_group("interactable"):
 			body.owner.in_range = false
+
+func start_progress(source: Node):
+	progress_source = source
+
+func stop_progress():
+	progress_source = null
+	$UI_Layer/MouseContainer.hide_progress()

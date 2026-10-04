@@ -58,10 +58,16 @@ func do_destroy(event: InputEvent, strength: float, source: Variant):
 		destruction_timer.wait_time = properties.hardness / strength
 		destruction_timer.start()
 		destruction_source = source
+		if source.has_method(&"start_progress"):
+			source.start_progress(destruction_timer)
 	elif event.is_action_released("destroy_object"):
 		destroying = false
 		destruction_timer.stop()
+		if source.has_method(&"stop_progress"):
+			source.stop_progress()
 
 func _on_timer_timeout() -> void:
+	if destruction_source.has_method(&"stop_progress"):
+		destruction_source.stop_progress()
 	destroy(true, destruction_source)
 	destroyed.emit()

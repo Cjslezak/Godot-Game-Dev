@@ -29,6 +29,7 @@ orb_texture = SubResource("CompressedTexture2D_qfd15")
 properties = SubResource("Resource_y5fs1")
 
 [node name="InventoryTransferAgent" parent="." unique_id=881450018 instance=ExtResource("3_u8cik")]
+source_inventory_path = NodePath("..")
 
 [node name="Inventory" parent="." unique_id=1104222237 instance=ExtResource("5_qfd15")]
 grid_container = NodePath("../InventoryPassHandler/BoxContainer/InventoryGrid")

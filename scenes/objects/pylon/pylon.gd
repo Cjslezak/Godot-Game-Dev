@@ -21,4 +21,4 @@ func _on_button_set_source_pressed() -> void:
 	pass # Replace with function body.
 
 func _on_button_set_destination_pressed() -> void:
-	$InventoryTransferAgent.set_source_inventory(player.get_path())
+	$InventoryTransferAgent.set_dest_inventory(player.get_path())

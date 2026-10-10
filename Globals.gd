@@ -40,3 +40,6 @@ func current_hotbar_action(event: InputEvent) -> Variant:
 	elif event.is_action_released("hotbar_0"):
 		hotbar_button = 0
 	return hotbar_button
+
+func scaled_as_tile(vector: Vector2) -> Vector2:
+	return vector / TextureSize

@@ -413,4 +413,3 @@ position = Vector2(546, 102)
 position = Vector2(687, -77)
 
 [connection signal="start_placing_object" from="Player" to="InteractableContainer" method="_on_player_start_placing_object"]
-[connection signal="gather_resource" from="GaeaGenerator/MapOverlayLayer" to="Player" method="on_gather_resource"]

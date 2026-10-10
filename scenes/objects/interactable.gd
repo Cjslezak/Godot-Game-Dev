@@ -12,8 +12,6 @@ var destruction_source: Variant
 
 @abstract func _interact(event: InputEvent, interact_from: Variant)
 
-signal destroyed()
-
 ## Impliment functionality to execute when the object is destroyed.
 func destroy():
 	pass

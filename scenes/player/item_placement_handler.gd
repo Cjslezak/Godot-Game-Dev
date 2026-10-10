@@ -21,17 +21,21 @@ func make_drag_preview():
 	
 	return img
 
-func create_ghost(ghost_size: Vector2):
+func create_ghost(ghost_size: Vector2) -> bool:
 	if ghost != null:
 		remove_child(ghost)
 		ghost.free()
 	
-	ghost = Sprite2D.new()
-	ghost.texture = Globals.PlacementTextures[stack.type]
-	ghost.apply_scale(ghost_size / ghost.texture.get_size())
-	
-	ghost.self_modulate = Globals.GhostColor
-	add_child(ghost)
+	if stack.type in Globals.PlacementTextures:
+		ghost = Sprite2D.new()
+		ghost.texture = Globals.PlacementTextures[stack.type]
+		ghost.apply_scale(ghost_size / ghost.texture.get_size())
+		
+		ghost.self_modulate = Globals.GhostColor
+		add_child(ghost)
+		return true
+	else:
+		return false
 
 func take_from_inventory() -> bool:
 	return source_inventory.take_qty(stack.type, 1)

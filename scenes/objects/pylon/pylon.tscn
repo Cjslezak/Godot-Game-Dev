@@ -16,6 +16,7 @@ script = ExtResource("2_iioad")
 drops = Dictionary[int, int]({
 4: 1
 })
+display_type = 4
 metadata/_custom_type_script = "uid://daqxd2j0y1xeu"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwuxh"]

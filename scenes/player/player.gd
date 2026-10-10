@@ -9,6 +9,7 @@ var has_other_inventory = false
 var inventory_currently_open = false
 var other_inventory_handler: InventoryPassHandler = null
 var progress_source: Node = null
+var placement_handler_pointer: ItemPlacementHandler = null
 
 signal start_placing_object(handler: ItemPlacementHandler)
 
@@ -18,7 +19,7 @@ func _ready() -> void:
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	$Camera2D.zoom_rate = zoom_rate
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_destroying_anything:
 		var percent = (destruction_timer.wait_time - destruction_timer.time_left) / destruction_timer.wait_time * 100
 		$UI_Layer/MouseContainer.show_progress(percent)
@@ -77,12 +78,17 @@ func press_hotbar(button: int):
 	return false
 
 func select_item_stack(stack: Types.ResourceStack):
-	var temp: ItemPlacementHandler = load("res://scenes/player/item_placement_handler.tscn").instantiate()
-	temp.stack = stack
-	temp.source_inventory = $Inventory
-	add_child(temp)
-	temp.accessibility_drag()
-	start_placing_object.emit(temp)
+	if placement_handler_pointer:
+		if get_viewport().gui_is_dragging():
+			get_viewport().gui_cancel_drag()
+		placement_handler_pointer.queue_free()
+		
+	placement_handler_pointer = load("res://scenes/player/item_placement_handler.tscn").instantiate()
+	placement_handler_pointer.stack = stack
+	placement_handler_pointer.source_inventory = $Inventory
+	add_child(placement_handler_pointer)
+	placement_handler_pointer.accessibility_drag()
+	start_placing_object.emit(placement_handler_pointer)
 
 func _on_interact_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	var interacted = []
@@ -104,6 +110,10 @@ func _on_interact_area_input_event(_viewport: Node, event: InputEvent, _shape_id
 				interact_with.owner.interact(event, self)
 				interacted.append(interact_with.owner)
 	
+	for object in interacted:
+		if object.is_mouse_over():
+			mouse_over_object(object)
+	
 	if Input.is_action_pressed(&"destroy_object"):
 		if not is_destroying_object:
 			for object in interacted:
@@ -113,6 +123,7 @@ func _on_interact_area_input_event(_viewport: Node, event: InputEvent, _shape_id
 	
 	if len(interacted) == 0 and not tile_interaction:
 		stop_destruction()
+		$UI_Layer/MouseContainer.hide_item_texture()
 
 func on_gather_resource(kind: Types.Item, qty: int=1):
 	$Inventory.add_item(kind, qty)
@@ -150,6 +161,8 @@ func _on_interact_area_body_exited(body: Node2D) -> void:
 	if body.owner != null:  # Required since slot gets triggered on object removal. 
 		if body.owner.is_in_group("interactable"):
 			body.owner.in_range = false
+	else:
+		$UI_Layer/MouseContainer.hide_item_texture()
 
 func _on_destroy_abort():
 	$UI_Layer/MouseContainer.hide_progress()
@@ -162,6 +175,9 @@ func _on_destruction_complete(object: Interactable):
 func _on_tile_destruction_complete(resource: Types.Item, layer: InteractableLayer):
 	on_gather_resource(resource)
 	mouse_over_tile(layer)
+
+func mouse_over_object(object: Interactable):
+	$UI_Layer/MouseContainer.show_item_texture(object.properties.display_type)
 
 func mouse_over_tile(layer: InteractableLayer):
 	var tile_pos = layer.local_to_map(layer.get_local_mouse_position())

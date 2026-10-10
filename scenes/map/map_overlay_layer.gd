@@ -4,8 +4,6 @@ class_name InteractableLayer
 var highlight_active = false
 var cell_resource_qtys: Dictionary = {}
 
-signal gather_resource(type: Types.Item)
-
 ## Called when the node enters the scene tree for the first time.
 #func _ready() -> void:
 	#pass # Replace with function body.
@@ -15,7 +13,7 @@ signal gather_resource(type: Types.Item)
 #func _process(delta: float) -> void:
 	#pass
 
-func _update_cells(coords: Array[Vector2i], forced_cleanup: bool) -> void:
+func _update_cells(coords: Array[Vector2i], _forced_cleanup: bool) -> void:
 	for coord in coords:
 		if coord not in cell_resource_qtys:
 			var data = get_cell_tile_data(coord)

@@ -13,6 +13,7 @@ var is_destroying_anything: bool:
 	get:
 		return is_destroying_object or is_destroying_tile
 
+@warning_ignore("unused_parameter")
 ## Called when the character begins destroying an object.
 func _on_destroying(t: Timer):
 	pass
@@ -21,10 +22,12 @@ func _on_destroying(t: Timer):
 func _on_destroy_abort():
 	pass
 
+@warning_ignore("unused_parameter")
 ## Called when the character finishes destroying an object.
 func _on_destruction_complete(object: Interactable):
 	pass
 
+@warning_ignore("unused_parameter")
 func _on_tile_destruction_complete(resource: Types.Item, layer: InteractableLayer):
 	pass
 

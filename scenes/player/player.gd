@@ -19,7 +19,7 @@ func _ready() -> void:
 	$Camera2D.zoom_rate = zoom_rate
 
 func _process(delta: float) -> void:
-	if is_destroying_object:
+	if is_destroying_anything:
 		var percent = (destruction_timer.wait_time - destruction_timer.time_left) / destruction_timer.wait_time * 100
 		$UI_Layer/MouseContainer.show_progress(percent)
 
@@ -89,6 +89,8 @@ func _on_interact_area_input_event(_viewport: Node, event: InputEvent, _shape_id
 	for interact_with in $InteractArea.get_overlapping_bodies():
 		if interact_with.is_class("TileMapLayer") and interact_with.is_in_group("interactable"):
 			interact_with.interact(event, self)
+			if interact_with.is_in_group("destructable") and Input.is_action_pressed(&"destroy_object") and not is_destroying_tile:
+				start_tile_destruction(interact_with)
 		elif interact_with.owner.is_in_group("interactable") and interact_with.owner not in interacted:
 			if interact_with.owner.is_mouse_over():
 				interact_with.owner.interact(event, self)
@@ -105,7 +107,6 @@ func _on_interact_area_input_event(_viewport: Node, event: InputEvent, _shape_id
 				start_destruction(object)
 	elif event.is_action_released(&"destroy_object"):
 		stop_destruction()
-
 
 func on_gather_resource(kind: Types.Item, qty: int=1):
 	$Inventory.add_item(kind, qty)
@@ -149,8 +150,9 @@ func _on_destroy_abort():
 	$UI_Layer/MouseContainer.hide_progress()
 
 func _on_destruction_complete(object: Interactable):
-	$UI_Layer/MouseContainer.hide_progress()
 	for drop in object.properties.drops:
 		on_gather_resource(drop, object.properties.drops[drop])
 	object.destroy()
-	
+
+func _on_tile_destruction_complete(resource: Types.Item):
+	on_gather_resource(resource)

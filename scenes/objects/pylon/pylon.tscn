@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://clwpikt4a17v3" path="res://pixel_art/Pixel Pylon.png" id="4_h8h5c"]
 [ext_resource type="PackedScene" uid="uid://dl7o8mfeex3t" path="res://scenes/inventory/InventoryHandler.tscn" id="5_qfd15"]
 [ext_resource type="PackedScene" uid="uid://b1q7j8ok3o0mr" path="res://scenes/inventory/InventoryPassHandler.tscn" id="6_8atv6"]
+[ext_resource type="Script" uid="uid://dugbk0irgqqxt" path="res://scenes/objects/pylon/connector.gd" id="9_4sniu"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qfd15"]
 load_path = "res://.godot/imported/Pixel Orb.png-c3744e261df03e9bfdf59051a2eb4f7b.ctex"
@@ -29,7 +30,6 @@ orb_texture = SubResource("CompressedTexture2D_qfd15")
 properties = SubResource("Resource_y5fs1")
 
 [node name="InventoryTransferAgent" parent="." unique_id=881450018 instance=ExtResource("3_u8cik")]
-source_inventory_path = NodePath("..")
 
 [node name="Inventory" parent="." unique_id=1104222237 instance=ExtResource("5_qfd15")]
 grid_container = NodePath("../InventoryPassHandler/BoxContainer/InventoryGrid")
@@ -82,6 +82,9 @@ polygon = PackedVector2Array(6.3869996, -38.42067, 6.3869996, -8.42067, 14.387, 
 [node name="Sprite2D" type="Sprite2D" parent="PylonBody" unique_id=1331774515]
 position = Vector2(0, 60)
 texture = ExtResource("4_h8h5c")
+
+[node name="Connector" type="Sprite2D" parent="." unique_id=1309101415]
+script = ExtResource("9_4sniu")
 
 [connection signal="pressed" from="InventoryPassHandler/BoxContainer/ButtonSetSource" to="." method="_on_button_set_source_pressed"]
 [connection signal="pressed" from="InventoryPassHandler/BoxContainer/ButtonSetDestination" to="." method="_on_button_set_destination_pressed"]

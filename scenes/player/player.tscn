@@ -15,6 +15,7 @@ radius = 500.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1095626347]
 collision_mask = 7
+motion_mode = 1
 script = ExtResource("1_onrkg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1647571961]

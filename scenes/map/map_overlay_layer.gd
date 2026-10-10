@@ -29,7 +29,7 @@ func interact(event: InputEvent, _source):
 		elif highlight_active:
 			highlight_active = false
 			reset_highlight()
-	if event.is_action_pressed("select_object"):
+	if event.is_action_pressed(&"destroy_object"):
 		var tile_pos = local_to_map(get_local_mouse_position())
 		var data = get_cell_tile_data(tile_pos)
 		if data and data.has_custom_data("Terrain"):

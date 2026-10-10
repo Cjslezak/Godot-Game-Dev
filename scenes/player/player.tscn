@@ -75,8 +75,38 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("4_75vfm")
 
-[node name="ProgressBar" type="ProgressBar" parent="UI_Layer/MouseContainer" unique_id=716254689]
+[node name="BoxContainer" type="BoxContainer" parent="UI_Layer/MouseContainer" unique_id=581409350]
+layout_mode = 2
+alignment = 1
+vertical = true
+
+[node name="TextureRect" type="TextureRect" parent="UI_Layer/MouseContainer/BoxContainer" unique_id=762410066]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 70)
+custom_maximum_size = Vector2(70, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("1_4flbx")
+stretch_mode = 5
+
+[node name="TextureQtyLabel" type="Label" parent="UI_Layer/MouseContainer/BoxContainer/TextureRect" unique_id=1109645536]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+horizontal_alignment = 2
+clip_text = true
+
+[node name="ProgressBar" type="ProgressBar" parent="UI_Layer/MouseContainer/BoxContainer" unique_id=716254689]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
+custom_maximum_size = Vector2(150, -1)
 layout_mode = 2
 
 [node name="HotbarInventory" parent="." unique_id=1104222237 instance=ExtResource("5_p47bc")]

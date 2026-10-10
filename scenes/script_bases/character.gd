@@ -6,7 +6,7 @@ class_name Character
 
 var destruction_timer: Timer
 var _destroying_object: Interactable
-var _destroying_tile_layer: TileMapLayer
+var _destroying_tile_layer: InteractableLayer
 var is_destroying_object: bool = false
 var is_destroying_tile: bool = false
 var is_destroying_anything: bool:
@@ -25,7 +25,7 @@ func _on_destroy_abort():
 func _on_destruction_complete(object: Interactable):
 	pass
 
-func _on_tile_destruction_complete(resource: Types.Item):
+func _on_tile_destruction_complete(resource: Types.Item, layer: InteractableLayer):
 	pass
 
 func _enter_tree() -> void:
@@ -42,7 +42,7 @@ func start_destruction(object: Interactable):
 		destruction_timer.start()
 		_on_destroying(destruction_timer)
 
-func start_tile_destruction(layer: TileMapLayer):
+func start_tile_destruction(layer: InteractableLayer):
 	if layer.is_in_group(&"destructable"):
 		var tile_pos = layer.local_to_map(layer.get_local_mouse_position())
 		var data = layer.get_cell_tile_data(tile_pos)
@@ -70,16 +70,17 @@ func on_destruction_timer_timeout():
 		var tile_pos = _destroying_tile_layer.local_to_map(_destroying_tile_layer.get_local_mouse_position())
 		var data = _destroying_tile_layer.get_cell_tile_data(tile_pos)
 		if data and data.has_custom_data("Terrain"):
-			var qty_rem = data.get_custom_data("Drop_Qty")
+			var qty_rem = _destroying_tile_layer.get_qty_at_pos(tile_pos)
 			var item = data.get_custom_data("Terrain") as Types.Item
 			qty_rem = qty_rem - 1
 			if qty_rem > 0:
 				is_destroying_tile = true
-				data.set_custom_data("Drop_Qty", qty_rem)
+				_destroying_tile_layer.remove_qty_at_pos(tile_pos)
+				#data.set_custom_data("Drop_Qty", qty_rem)
 				destruction_timer.start()
 			else:
 				_destroying_tile_layer.reset_highlight()
 				is_destroying_tile = false
 				_on_destroy_abort()
 				_destroying_tile_layer.set_cell(tile_pos)
-			_on_tile_destruction_complete(item)
+			_on_tile_destruction_complete(item, _destroying_tile_layer)

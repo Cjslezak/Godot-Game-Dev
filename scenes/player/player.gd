@@ -86,9 +86,12 @@ func select_item_stack(stack: Types.ResourceStack):
 
 func _on_interact_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	var interacted = []
+	var tile_interaction = false
 	for interact_with in $InteractArea.get_overlapping_bodies():
 		if interact_with.is_class("TileMapLayer") and interact_with.is_in_group("interactable"):
+			tile_interaction = true
 			interact_with.interact(event, self)
+			mouse_over_tile(interact_with)
 			if interact_with.is_in_group("destructable") and Input.is_action_pressed(&"destroy_object") and not is_destroying_tile:
 				start_tile_destruction(interact_with)
 		elif interact_with.owner.is_in_group("interactable") and interact_with.owner not in interacted:
@@ -106,6 +109,9 @@ func _on_interact_area_input_event(_viewport: Node, event: InputEvent, _shape_id
 			for object in interacted:
 				start_destruction(object)
 	elif event.is_action_released(&"destroy_object"):
+		stop_destruction()
+	
+	if len(interacted) == 0 and not tile_interaction:
 		stop_destruction()
 
 func on_gather_resource(kind: Types.Item, qty: int=1):
@@ -136,7 +142,6 @@ func _on_inventory_item_clicked(item: Types.ResourceStack, _source: InventoryHan
 func on_transfer_success(stack: Types.ResourceStack):
 	$Inventory.take_qty(stack.type, stack.qty)
 
-
 func _on_interact_area_body_entered(body: Node2D) -> void:
 	if body.owner.is_in_group("interactable"):
 		body.owner.in_range = true
@@ -154,5 +159,19 @@ func _on_destruction_complete(object: Interactable):
 		on_gather_resource(drop, object.properties.drops[drop])
 	object.destroy()
 
-func _on_tile_destruction_complete(resource: Types.Item):
+func _on_tile_destruction_complete(resource: Types.Item, layer: InteractableLayer):
 	on_gather_resource(resource)
+	mouse_over_tile(layer)
+
+func mouse_over_tile(layer: InteractableLayer):
+	var tile_pos = layer.local_to_map(layer.get_local_mouse_position())
+	var data = layer.get_cell_tile_data(tile_pos)
+	if data and data.has_custom_data("Terrain"):
+		var item = data.get_custom_data("Terrain") as Types.Item
+		var qty = layer.get_qty_at_pos(tile_pos)
+		$UI_Layer/MouseContainer.show_item_texture(item, qty)
+	else:
+		$UI_Layer/MouseContainer.hide_item_texture()
+		if is_destroying_tile:
+			stop_destruction()
+		

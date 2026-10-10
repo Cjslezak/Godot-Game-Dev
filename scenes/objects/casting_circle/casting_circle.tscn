@@ -16,6 +16,7 @@ script = ExtResource("2_gjog0")
 drops = Dictionary[int, int]({
 3: 1
 })
+display_type = 3
 metadata/_custom_type_script = "uid://daqxd2j0y1xeu"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwuxh"]
@@ -23,7 +24,7 @@ radius = 32.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gjog0"]
 
-[node name="CastingCircle" type="Node2D" unique_id=544357769]
+[node name="CastingCircle" type="Node2D" unique_id=544357769 groups=["destructable"]]
 script = ExtResource("1_fobci")
 properties = SubResource("Resource_73u7c")
 

@@ -21,12 +21,12 @@ func _process(_delta: float) -> void:
 			placing = false
 			if Input.is_action_just_released("select_object"):
 				place_structure_at(mouse_pos)
-				
+			
 			placement_handler.queue_free()
 			placement_handler = null
 		else:
 			placement_handler.move_ghost(mouse_pos)
-	
+
 func place_structure_at(p: Vector2):
 	if placement_handler.take_from_inventory():
 		var structure_object: Node2D = Globals.StructureFiles[placement_handler.stack.type].instantiate()
@@ -35,6 +35,10 @@ func place_structure_at(p: Vector2):
 		structure_placed.emit(placement_handler.stack.type)
 
 func _on_player_start_placing_object(handler: ItemPlacementHandler) -> void:
-	placing = true
 	placement_handler = handler
-	placement_handler.create_ghost(grid_size)
+	if placement_handler.create_ghost(grid_size):
+		placing = true
+	else:
+		placing = false
+		placement_handler.queue_free()
+		placement_handler = null

@@ -4,3 +4,4 @@ class_name ObjectProperties
 ## Time in sec to destroy object / tool strength
 @export var hardness: float = 1
 @export var drops: Dictionary[Types.Item, int]
+@export var display_type: Types.Item = Types.Item.WOOD

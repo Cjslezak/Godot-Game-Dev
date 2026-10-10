@@ -109,17 +109,17 @@ custom_minimum_size = Vector2(150, 0)
 custom_maximum_size = Vector2(150, -1)
 layout_mode = 2
 
-[node name="HotbarInventory" parent="." unique_id=1104222237 instance=ExtResource("5_p47bc")]
-grid_container = NodePath("../UI_Layer/PanelContainer/MarginContainer/GridHotbar")
-columns = 10
-allow_drag = false
-only_strict_slots = true
-
 [node name="Inventory" parent="." unique_id=1435636444 instance=ExtResource("5_p47bc")]
 grid_container = NodePath("../InventoryWindow/PanelContainer/MarginContainer/InventoryLayout/GridInventory")
 initial_contents = Dictionary[int, int]({
 3: 1
 })
+
+[node name="HotbarInventory" parent="." unique_id=1104222237 instance=ExtResource("5_p47bc")]
+grid_container = NodePath("../UI_Layer/PanelContainer/MarginContainer/GridHotbar")
+columns = 10
+allow_drag = false
+only_strict_slots = true
 
 [node name="InventoryWindow" type="PopupPanel" parent="." unique_id=491057858]
 oversampling_override = 1.0

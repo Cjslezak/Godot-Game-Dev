@@ -3,6 +3,7 @@ extends PanelContainer
 const pointer_offset = Vector2(20, 50)
 
 var shown_items: int = 0
+var supressed: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -13,7 +14,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	global_position = get_global_mouse_position() + pointer_offset
-	if shown_items == 0:
+	if shown_items == 0 or supressed:
 		hide()
 	else:
 		show()
@@ -57,3 +58,9 @@ func hide_item_texture():
 	%TextureRect.hide()
 	shown_items &= 0b1111_1111_1111_1101
 	reset_size()
+
+func hide_all():
+	%TextureRect.hide()
+	%ProgressBar.hide()
+	hide()
+	shown_items = 0

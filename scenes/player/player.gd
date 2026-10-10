@@ -35,7 +35,6 @@ func _physics_process(delta: float) -> void:
 		_velocity = _velocity.slide(collision.get_normal())
 	move_and_collide(_velocity * delta)
 
-
 func _input(input: InputEvent):
 	if input.is_action_released("inventory"):
 		open_inventory()
@@ -52,7 +51,7 @@ func _input(input: InputEvent):
 func open_inventory():
 	$InventoryWindow.popup_centered()
 	$InventoryWindow.reset_size()
-
+	$UI_Layer/MouseContainer.supressed = true
 
 func open_object_inventory(handler: InventoryPassHandler):
 	%InventorySeperator.show()
@@ -138,6 +137,7 @@ func _on_inventory_window_popup_hide() -> void:
 		other_inventory_handler.return_owner()
 		has_other_inventory = false
 		other_inventory_handler = null
+	$UI_Layer/MouseContainer.supressed = false
 
 func _on_inventory_hotbar_pressed(button: int, stack: ItemStack) -> void:
 	if stack != null:

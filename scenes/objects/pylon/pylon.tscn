@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://5go2g1l8mnvq" path="res://pixel_art/Pixel Orb.png" id="2_bgskx"]
 [ext_resource type="Script" uid="uid://cjg6qay35jf" path="res://scenes/objects/pylon/orb_body.gd" id="2_h8h5c"]
 [ext_resource type="Script" uid="uid://daqxd2j0y1xeu" path="res://custom_resources/object_properties.gd" id="2_iioad"]
+[ext_resource type="PackedScene" uid="uid://cm6swfgx5jk5w" path="res://scenes/inventory/inventory_transfer_agent/InventoryTransferAgent.tscn" id="3_u8cik"]
 [ext_resource type="Texture2D" uid="uid://clwpikt4a17v3" path="res://pixel_art/Pixel Pylon.png" id="4_h8h5c"]
 [ext_resource type="PackedScene" uid="uid://dl7o8mfeex3t" path="res://scenes/inventory/InventoryHandler.tscn" id="5_qfd15"]
 [ext_resource type="PackedScene" uid="uid://b1q7j8ok3o0mr" path="res://scenes/inventory/InventoryPassHandler.tscn" id="6_8atv6"]
@@ -27,8 +28,11 @@ script = ExtResource("1_qdrfa")
 orb_texture = SubResource("CompressedTexture2D_qfd15")
 properties = SubResource("Resource_y5fs1")
 
+[node name="InventoryTransferAgent" parent="." unique_id=881450018 instance=ExtResource("3_u8cik")]
+redraw_each_frame = true
+
 [node name="Inventory" parent="." unique_id=1104222237 instance=ExtResource("5_qfd15")]
-grid_container = NodePath("../InventoryPassHandler/InventoryGrid")
+grid_container = NodePath("../InventoryPassHandler/BoxContainer/InventoryGrid")
 columns = 2
 inventory_size = 4
 
@@ -36,7 +40,23 @@ inventory_size = 4
 stack_transfer_target_path = NodePath("../Inventory")
 stack_transfer_sources = Array[NodePath]([NodePath("../Inventory")])
 
-[node name="InventoryGrid" type="GridContainer" parent="InventoryPassHandler" unique_id=625535650]
+[node name="BoxContainer" type="BoxContainer" parent="InventoryPassHandler" unique_id=650680724]
+offset_right = 40.0
+offset_bottom = 40.0
+vertical = true
+
+[node name="InventoryGrid" type="GridContainer" parent="InventoryPassHandler/BoxContainer" unique_id=625535650]
+layout_mode = 2
+
+[node name="ButtonSetSource" type="Button" parent="InventoryPassHandler/BoxContainer" unique_id=386437148]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Set Transfer Source"
+
+[node name="ButtonSetDestination" type="Button" parent="InventoryPassHandler/BoxContainer" unique_id=1744512691]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Set Transfer Destination"
 
 [node name="OrbBody" type="AnimatableBody2D" parent="." unique_id=915119433]
 collision_layer = 2
@@ -62,3 +82,7 @@ polygon = PackedVector2Array(6.3869996, -38.42067, 6.3869996, -8.42067, 14.387, 
 [node name="Sprite2D" type="Sprite2D" parent="PylonBody" unique_id=1331774515]
 position = Vector2(0, 60)
 texture = ExtResource("4_h8h5c")
+
+[connection signal="connection_complete" from="InventoryTransferAgent" to="." method="_on_inventory_transfer_agent_connection_complete"]
+[connection signal="pressed" from="InventoryPassHandler/BoxContainer/ButtonSetSource" to="." method="_on_button_set_source_pressed"]
+[connection signal="pressed" from="InventoryPassHandler/BoxContainer/ButtonSetDestination" to="." method="_on_button_set_destination_pressed"]

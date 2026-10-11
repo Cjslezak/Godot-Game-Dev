@@ -57,6 +57,7 @@ interactable="Objects interactable by mouse click"
 inventoryPage="Object designed to hold inventory objects and slots."
 playerInteractArea="Members of this group overlap currently interactable structures."
 destructable=""
+inventoryHandler="Reserved for inventory handler nodes. Used for node searching."
 
 [input]
 

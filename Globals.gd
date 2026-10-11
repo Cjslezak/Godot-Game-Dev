@@ -1,5 +1,10 @@
 extends Node
 
+@warning_ignore("unused_signal")
+signal inventory_popup_requested(handler: InventoryPassHandler)
+@warning_ignore("unused_signal")
+signal inventory_hide_requested()
+
 const TextureSize = 64
 
 const HighlightColor: Color = Color(1.353, 1.353, 1.353, 1.0)
@@ -40,3 +45,6 @@ func current_hotbar_action(event: InputEvent) -> Variant:
 	elif event.is_action_released("hotbar_0"):
 		hotbar_button = 0
 	return hotbar_button
+
+func scaled_as_tile(vector: Vector2) -> Vector2:
+	return vector / TextureSize

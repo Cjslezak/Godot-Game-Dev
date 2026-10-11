@@ -19,7 +19,7 @@ Change all loading bars to use tweeners with callbacks instead of dedicated time
 - [x] Individual Object UIs
 - [x] Crafting Handlers 
 - [ ] Optimize Object UI System
-- [ ] Inventory Agents 
+- [x] Inventory Agents 
 - [ ] Item World Objects
 - [ ] Item Transporters
 - [ ] Unlocks System

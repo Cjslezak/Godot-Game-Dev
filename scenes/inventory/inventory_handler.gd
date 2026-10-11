@@ -194,3 +194,21 @@ func add_stack(stack: Types.ResourceStack):
 	else:
 		contained_stack.qty += stack.qty
 	contents_updated()
+
+func take_first_item(qty: int = -1) -> Types.ResourceStack:
+	var taken: Types.ResourceStack = null
+	if len(contents) > 0:
+		if qty == -1:
+			taken = contents.pop_front()
+		else:
+			taken = contents[0].duplicate()
+			if qty < taken.qty:
+				taken.qty = qty
+				contents[0].qty -= qty
+			else:
+				contents.remove_at(0)
+				
+	if taken != null:
+		contents_updated()
+	return taken
+	

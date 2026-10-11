@@ -9,6 +9,12 @@ class_name InventoryTransferAgent
 @export var periodic_time_ms: int = 1000
 @export var transfer_tile_range: int = 5
 
+@export_category("Connector")
+@export var animate_items: bool = true
+@export var animate_connector: bool = true
+@export var redraw_each_frame: bool = false
+@export var connector_color: Color = Color(0.765, 0.349, 0.925, 1.0)
+
 var source_inventory: InventoryHandler
 var dest_inventory: InventoryHandler
 
@@ -17,12 +23,19 @@ func _ready():
 	$Timer.wait_time = float(periodic_time_ms) / 1000
 	if not on_demand:
 		$Timer.start()
-	print(dest_inventory_path)
 	if not source_inventory_path.is_empty():
 		set_source_inventory(source_inventory_path)
 	
 	if not dest_inventory_path.is_empty():
 		set_dest_inventory(dest_inventory_path)
+	
+	$Connector.animate_items = animate_items
+	$Connector.animate_connector = animate_connector
+	$Connector.redraw_each_frame = redraw_each_frame
+	$Connector.connector_color = connector_color
+	
+	$Connector.connect_to(get_parent())
+
 
 func transfer_item():
 	$Timer.start()
@@ -37,9 +50,11 @@ func find_object_inventory(object_path: NodePath) -> InventoryHandler:
 
 func set_source_inventory(inventory: NodePath):
 	source_inventory = find_object_inventory(inventory)
+	$Connector.connect_to(get_node(inventory))
 
 func set_dest_inventory(inventory: NodePath):
 	dest_inventory = find_object_inventory(inventory)
+	$Connector.connect_to(get_node(inventory))
 
 func is_in_range() -> bool:
 	if source_inventory and dest_inventory:

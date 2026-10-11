@@ -19,8 +19,6 @@ func _interact(event: InputEvent, source):
 
 func _on_button_set_source_pressed() -> void:
 	$InventoryTransferAgent.set_source_inventory(get_path())
-	$Connector.src_obj = self
 
 func _on_button_set_destination_pressed() -> void:
 	$InventoryTransferAgent.set_dest_inventory(player.get_path())
-	$Connector.dest_obj = player

@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cm6swfgx5jk5w"]
+
+[ext_resource type="Script" uid="uid://dmqcrpks7c8js" path="res://scenes/inventory/inventory_transfer_agent/inventory_transfer_agent.gd" id="1_v6eqk"]
+[ext_resource type="Script" uid="uid://bkxohuejbay3b" path="res://scenes/inventory/inventory_transfer_agent/connector.gd" id="2_755mt"]
+
+[node name="InventoryTransferAgent" type="Node" unique_id=881450018]
+script = ExtResource("1_v6eqk")
+
+[node name="Timer" type="Timer" parent="." unique_id=1257209993]
+
+[node name="Connector" type="Sprite2D" parent="." unique_id=287007865]
+script = ExtResource("2_755mt")
+
+[connection signal="timeout" from="Timer" to="." method="item_transfer_triggered"]

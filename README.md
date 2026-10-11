@@ -17,7 +17,7 @@ Put any random ideas in this section.
 - [x] Individual Object UIs
 - [x] Crafting Handlers 
 - [ ] Optimize Object UI System
-- [ ] Inventory Agents 
+- [x] Inventory Agents 
 - [ ] Item World Objects
 - [ ] Item Transporters
 - [ ] Unlocks System

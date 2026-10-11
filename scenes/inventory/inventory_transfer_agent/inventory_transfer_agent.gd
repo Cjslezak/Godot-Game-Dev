@@ -13,12 +13,22 @@ class_name InventoryTransferAgent
 @export var animate_items: bool = true
 @export var animate_connector: bool = true
 @export var redraw_each_frame: bool = false
+@export var transfer_animation_sec: float = 2.0
 @export var connector_color: Color = Color(0.765, 0.349, 0.925, 1.0)
 
 var source_inventory: InventoryHandler
 var dest_inventory: InventoryHandler
 var connecting_source: bool = false
 var connecting_dest: bool = false
+var item_sprites: Dictionary[Sprite2D, Types.ResourceStack] = {}
+
+var source_coords: Vector2:
+	get:
+		return source_inventory.get_parent().global_position
+		
+var dest_coords: Vector2:
+	get:
+		return dest_inventory.get_parent().global_position
 
 signal connection_complete()
 
@@ -107,4 +117,22 @@ func item_transfer_triggered():
 	if source_inventory and dest_inventory and $Connector.is_all_in_range():
 		var taken_item = source_inventory.take_first_item(1)
 		if taken_item:
-			dest_inventory.add_stack(taken_item)
+			if animate_items:
+				var sprite = Sprite2D.new()
+				sprite.texture = Globals.ItemTextures[taken_item.type]
+				sprite.global_position = source_coords
+				var scale_vect = Vector2(50, 50) / sprite.get_rect().size
+				item_sprites[sprite] = taken_item
+				var tween = sprite.create_tween()
+				tween.tween_property(sprite, "global_position", get_parent().global_position, transfer_animation_sec)
+				tween.tween_property(sprite, "global_position", dest_coords, transfer_animation_sec)
+				tween.tween_callback(item_transfer_complete.bind(sprite))
+				sprite.apply_scale(scale_vect)
+				add_child(sprite)
+			else:
+				dest_inventory.add_stack(taken_item)
+
+func item_transfer_complete(sprite: Sprite2D):
+	dest_inventory.add_stack(item_sprites[sprite])
+	sprite.queue_free()
+	item_sprites.erase(sprite)

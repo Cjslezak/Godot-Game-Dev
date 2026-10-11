@@ -112,6 +112,7 @@ layout_mode = 2
 [node name="Inventory" parent="." unique_id=1435636444 groups=["inventoryHandler"] instance=ExtResource("5_p47bc")]
 grid_container = NodePath("../InventoryWindow/PanelContainer/MarginContainer/InventoryLayout/GridInventory")
 initial_contents = Dictionary[int, int]({
+1: 50,
 3: 1
 })
 

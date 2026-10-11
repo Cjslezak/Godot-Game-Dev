@@ -17,6 +17,10 @@ class_name InventoryTransferAgent
 
 var source_inventory: InventoryHandler
 var dest_inventory: InventoryHandler
+var connecting_source: bool = false
+var connecting_dest: bool = false
+
+signal connection_complete()
 
 func _ready():
 	$Timer.one_shot = on_demand
@@ -33,9 +37,42 @@ func _ready():
 	$Connector.animate_connector = animate_connector
 	$Connector.redraw_each_frame = redraw_each_frame
 	$Connector.connector_color = connector_color
+	$Connector.connector_range = transfer_tile_range
 	
-	$Connector.connect_to(get_parent())
+	$Connector.connect_to(get_parent(), 1)
 
+func _input(event: InputEvent) -> void:
+	if connecting_source or connecting_dest:
+		if event.is_action_released("select_object"):
+			event = event as InputEventMouseButton
+			var pos = $Connector.get_global_mouse_position()
+			var collider: RayCast2D = RayCast2D.new()
+			add_child(collider)
+			collider.set_collide_with_areas(true)
+			collider.set_collision_mask(0b11)
+			collider.set_hit_from_inside(true)
+			collider.set_global_position(pos)
+			collider.force_raycast_update()
+			
+			var object_at: CollisionObject2D = collider.get_collider()
+			collider.queue_free()
+			
+			if object_at and object_at not in get_parent().get_children():
+				if connecting_source:
+					if object_at is Player:
+						set_source_inventory(object_at.get_path())
+					else:
+						set_source_inventory(object_at.get_parent().get_path())
+					get_window().set_input_as_handled()
+				elif connecting_dest:
+					if object_at is Player:
+						set_dest_inventory(object_at.get_path())
+					else:
+						set_dest_inventory(object_at.get_parent().get_path())
+					get_window().set_input_as_handled()
+			connecting_source = false
+			connecting_dest = false
+			connection_complete.emit()
 
 func transfer_item():
 	$Timer.start()
@@ -48,13 +85,15 @@ func find_object_inventory(object_path: NodePath) -> InventoryHandler:
 			return child
 	return null
 
+## Takes the path to an object that contains an inventory handler.
 func set_source_inventory(inventory: NodePath):
 	source_inventory = find_object_inventory(inventory)
-	$Connector.connect_to(get_node(inventory))
+	$Connector.connect_to(get_node(inventory), 0)
 
+## Takes the path to an object that contains an inventory handler.
 func set_dest_inventory(inventory: NodePath):
 	dest_inventory = find_object_inventory(inventory)
-	$Connector.connect_to(get_node(inventory))
+	$Connector.connect_to(get_node(inventory), 2)
 
 func is_in_range() -> bool:
 	if source_inventory and dest_inventory:

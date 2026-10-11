@@ -1,9 +1,8 @@
 extends Interactable
 
-func _interact(event: InputEvent, source):
-	source = source as Player
+func _interact(event: InputEvent, _source):
 	if event.is_action_released("select_object"):
-		source.open_object_inventory($InventoryPassHandler)
+		Globals.inventory_popup_requested.emit($InventoryPassHandler)
 
 func destroy():
 	queue_free()

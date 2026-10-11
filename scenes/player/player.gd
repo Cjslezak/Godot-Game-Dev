@@ -18,6 +18,8 @@ func _ready() -> void:
 	screen_size = get_viewport_rect().size
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	$Camera2D.zoom_rate = zoom_rate
+	Globals.inventory_popup_requested.connect(open_object_inventory)
+	Globals.inventory_hide_requested.connect($InventoryWindow.hide)
 
 func _process(_delta: float) -> void:
 	if is_destroying_anything:
@@ -35,7 +37,7 @@ func _physics_process(delta: float) -> void:
 		_velocity = _velocity.slide(collision.get_normal())
 	move_and_collide(_velocity * delta)
 
-func _input(input: InputEvent):
+func _unhandled_input(input: InputEvent):
 	if input.is_action_released("inventory"):
 		open_inventory()
 		get_window().set_input_as_handled()

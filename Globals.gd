@@ -1,5 +1,10 @@
 extends Node
 
+@warning_ignore("unused_signal")
+signal inventory_popup_requested(handler: InventoryPassHandler)
+@warning_ignore("unused_signal")
+signal inventory_hide_requested()
+
 const TextureSize = 64
 
 const HighlightColor: Color = Color(1.353, 1.353, 1.353, 1.0)

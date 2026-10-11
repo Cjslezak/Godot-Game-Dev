@@ -83,5 +83,6 @@ polygon = PackedVector2Array(6.3869996, -38.42067, 6.3869996, -8.42067, 14.387, 
 position = Vector2(0, 60)
 texture = ExtResource("4_h8h5c")
 
+[connection signal="connection_complete" from="InventoryTransferAgent" to="." method="_on_inventory_transfer_agent_connection_complete"]
 [connection signal="pressed" from="InventoryPassHandler/BoxContainer/ButtonSetSource" to="." method="_on_button_set_source_pressed"]
 [connection signal="pressed" from="InventoryPassHandler/BoxContainer/ButtonSetDestination" to="." method="_on_button_set_destination_pressed"]

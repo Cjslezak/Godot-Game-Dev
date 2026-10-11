@@ -109,7 +109,7 @@ custom_minimum_size = Vector2(150, 0)
 custom_maximum_size = Vector2(150, -1)
 layout_mode = 2
 
-[node name="Inventory" parent="." unique_id=1435636444 instance=ExtResource("5_p47bc")]
+[node name="Inventory" parent="." unique_id=1435636444 groups=["inventoryHandler"] instance=ExtResource("5_p47bc")]
 grid_container = NodePath("../InventoryWindow/PanelContainer/MarginContainer/InventoryLayout/GridInventory")
 initial_contents = Dictionary[int, int]({
 3: 1

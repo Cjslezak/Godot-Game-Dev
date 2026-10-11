@@ -37,6 +37,15 @@ func _draw():
 					to_local(connected_objects[2].global_position), 
 					connector_color)
 
+func is_all_in_range() -> bool:
+	for obj in connected_objects:
+		if not obj:
+			return false
+			
+	if is_in_range(connected_objects[0], connected_objects[1]) and is_in_range(connected_objects[1], connected_objects[2]):
+		return true
+	return false
+
 func is_in_range(object1: Node2D, object2: Node2D) -> bool:
 	var dist = object1.global_position - object2.global_position
 	dist = Globals.scaled_as_tile(dist).length()

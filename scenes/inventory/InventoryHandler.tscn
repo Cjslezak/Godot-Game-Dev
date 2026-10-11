@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" uid="uid://dh5smbn2kjmsb" path="res://scenes/inventory/inventory_handler.gd" id="1_hh0fk"]
 
-[node name="InventoryHandler" type="Node" unique_id=1104222237 groups=["inventoryHandler"]]
+[node name="InventoryHandler" type="Node" unique_id=1104222237]
 script = ExtResource("1_hh0fk")

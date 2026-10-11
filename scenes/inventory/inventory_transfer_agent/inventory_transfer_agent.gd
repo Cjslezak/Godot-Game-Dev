@@ -95,16 +95,6 @@ func set_dest_inventory(inventory: NodePath):
 	dest_inventory = find_object_inventory(inventory)
 	$Connector.connect_to(get_node(inventory), 2)
 
-func is_in_range() -> bool:
-	if source_inventory and dest_inventory:
-		var source_object: Node2D = source_inventory.get_parent()
-		var dest_object: Node2D = dest_inventory.get_parent()
-		var dist = source_object.global_position - dest_object.global_position
-		dist = Globals.scaled_as_tile(dist).length()
-		if dist <= transfer_tile_range:
-			return true
-	return false
-
 ## Begin item transfer process. Should be called by timer.
 func item_transfer_triggered():
 	if source_inventory == null:
@@ -113,8 +103,8 @@ func item_transfer_triggered():
 	if dest_inventory == null:
 		if not dest_inventory_path.is_empty():
 			dest_inventory = find_object_inventory(dest_inventory_path)
-	
-	if source_inventory and dest_inventory and is_in_range():
+			
+	if source_inventory and dest_inventory and $Connector.is_all_in_range():
 		var taken_item = source_inventory.take_first_item(1)
 		if taken_item:
 			dest_inventory.add_stack(taken_item)

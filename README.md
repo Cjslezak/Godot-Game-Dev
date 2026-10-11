@@ -10,6 +10,8 @@ Put any random ideas in this section.
  - Some unlocks gained by sending resources through portal to town
  - Some unlocks gained by research
 
+Change all loading bars to use tweeners with callbacks instead of dedicated timer objects and polling. Check out this link for interruption method: https://docs.godotengine.org/en/stable/classes/class_tween.html#class-tween-method-tween-await
+
 ## Todo:
 - [x] Inventory Handlers
 - [x] World Objects

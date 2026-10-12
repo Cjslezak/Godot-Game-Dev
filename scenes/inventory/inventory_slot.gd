@@ -2,10 +2,10 @@ extends MarginContainer
 class_name InventorySlot
 
 @warning_ignore("unused_signal")
-signal item_dropped(item_stack: Types.ResourceStack, source_stack: ItemStack)
+signal item_dropped(item_stack: ItemStackResource, source_stack: ItemStack)
 
 @warning_ignore("unused_signal")
-signal item_removed(item_stack: Types.ResourceStack)
+signal item_removed(item_stack: ItemStackResource)
 
 @export var item: ItemStack:
 	get:
@@ -62,8 +62,8 @@ func set_contents(item_type: Types.Item, qty: int):
 		c.free()
 		
 	var stack: ItemStack = preload("res://scenes/inventory/item_stack.tscn").instantiate()
-	stack.set_stack(Types.ResourceStack.new(item_type, qty))
+	stack.set_stack(ItemStackResource.new(item_type, qty))
 	item = stack
 	
-func _on_inventory_slot_panel_item_dropped(dropped_item: Types.ResourceStack, source_obj: ItemStack) -> void:
+func _on_inventory_slot_panel_item_dropped(dropped_item: ItemStackResource, source_obj: ItemStack) -> void:
 	item_dropped.emit(dropped_item, source_obj)

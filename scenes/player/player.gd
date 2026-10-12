@@ -78,7 +78,7 @@ func press_hotbar(button: int):
 		return true
 	return false
 
-func select_item_stack(stack: Types.ResourceStack):
+func select_item_stack(stack: ItemStackResource):
 	if placement_handler_pointer:
 		if get_viewport().gui_is_dragging():
 			get_viewport().gui_cancel_drag()
@@ -148,11 +148,11 @@ func _on_inventory_hotbar_pressed(button: int, stack: ItemStack) -> void:
 		button -= 1
 		$HotbarInventory.set_strict_slot(button, stack.stack.type)
 
-func _on_inventory_item_clicked(item: Types.ResourceStack, _source: InventoryHandler) -> void:
+func _on_inventory_item_clicked(item: ItemStackResource, _source: InventoryHandler) -> void:
 	if has_other_inventory:
 		other_inventory_handler.transfer_stack_to(item)
 
-func on_transfer_success(stack: Types.ResourceStack):
+func on_transfer_success(stack: ItemStackResource):
 	$Inventory.take_qty(stack.type, stack.qty)
 
 func _on_interact_area_body_entered(body: Node2D) -> void:

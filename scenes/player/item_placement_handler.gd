@@ -1,7 +1,7 @@
 extends Control
 class_name ItemPlacementHandler
 
-var stack: Types.ResourceStack
+var stack: ItemStackResource
 var ghost: Sprite2D
 var source_inventory: InventoryHandler
 

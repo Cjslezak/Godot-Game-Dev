@@ -20,7 +20,7 @@ var source_inventory: InventoryHandler
 var dest_inventory: InventoryHandler
 var connecting_source: bool = false
 var connecting_dest: bool = false
-var item_sprites: Dictionary[Sprite2D, Types.ResourceStack] = {}
+var item_sprites: Dictionary[Sprite2D, ItemStackResource] = {}
 
 var source_coords: Vector2:
 	get:

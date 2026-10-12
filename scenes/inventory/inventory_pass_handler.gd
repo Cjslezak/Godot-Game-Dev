@@ -7,8 +7,8 @@ class_name InventoryPassHandler
 @onready var original_parent = get_parent()
 @onready var container = get_node("MarginContainer")
 
-signal stack_transfer_request(stack: Types.ResourceStack)
-signal stack_transfer_succeed(stack: Types.ResourceStack)
+signal stack_transfer_request(stack: ItemStackResource)
+signal stack_transfer_succeed(stack: ItemStackResource)
 var transfer_target: InventoryHandler
 
 func _ready():
@@ -25,11 +25,11 @@ func _ready():
 		if c != container:
 			c.reparent(container)
 
-func on_transfer_request(stack: Types.ResourceStack, inventory: InventoryHandler):
+func on_transfer_request(stack: ItemStackResource, inventory: InventoryHandler):
 	inventory.take_qty(stack.type, stack.qty)
 	stack_transfer_request.emit(stack)
 
-func transfer_stack_to(stack: Types.ResourceStack):
+func transfer_stack_to(stack: ItemStackResource):
 	if transfer_target != null:
 		transfer_target.add_stack(stack)
 		stack_transfer_succeed.emit(stack)

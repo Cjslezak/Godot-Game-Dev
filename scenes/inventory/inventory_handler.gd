@@ -17,7 +17,7 @@ class_name InventoryHandler
 const stack_resource = preload("res://scenes/inventory/item_stack.tscn")
 
 var slots: Array[InventorySlot] = []
-var contents: Array[Types.ResourceStack] = []
+var contents: Array[ItemStackResource] = []
 
 var strict_slots: Dictionary[Types.Item, int]
 
@@ -26,12 +26,12 @@ var itemstack_objects: Array[ItemStack]
 
 signal contents_changed()
 signal hotbar_pressed(button: int, stack: ItemStack)
-signal item_clicked(item: Types.ResourceStack, inventory: InventoryHandler)
+signal item_clicked(item: ItemStackResource, inventory: InventoryHandler)
 
 func _ready() -> void:
 	set_slots()
 	for stack in initial_contents:
-		var item = Types.ResourceStack.new(stack, initial_contents[stack])
+		var item = ItemStackResource.new(stack, initial_contents[stack])
 		contents.append(item)
 	contents_updated()
 	for slot in slots:
@@ -47,7 +47,7 @@ func index_of(type: Types.Item):
 	return idx
 
 ## Return reference to contained stack of specified type.
-func stack_of(type: Types.Item) -> Types.ResourceStack:
+func stack_of(type: Types.Item) -> ItemStackResource:
 	for i in contents:
 		if i.type == type:
 			return i
@@ -80,7 +80,7 @@ func set_strict_slot(slot_idx: int, type: Types.Item):
 	strict_slots[type] = slot_idx
 	contents_updated()
 
-func get_slot_item(slot_idx: int) -> Types.ResourceStack:
+func get_slot_item(slot_idx: int) -> ItemStackResource:
 	if slot_idx in strict_slots.values():
 		var type = strict_slots.find_key(slot_idx)
 		for stack in contents:
@@ -114,18 +114,18 @@ func on_item_click(slot: InventorySlot):
 func on_hotbar_button(button: int, slot: InventorySlot):
 	hotbar_pressed.emit(button, slot.item)
 	
-func set_contents(list: Array[Types.ResourceStack]):
+func set_contents(list: Array[ItemStackResource]):
 	if contents != list:
 		contents = list.duplicate_deep()
 		contents_updated()
 
-func on_item_removed(removed_stack: Types.ResourceStack):
-	var idx = contents.find_custom(func(x: Types.ResourceStack): return x.equals(removed_stack))
+func on_item_removed(removed_stack: ItemStackResource):
+	var idx = contents.find_custom(func(x: ItemStackResource): return x.equals(removed_stack))
 	if idx >= 0:
 		contents.remove_at(idx)
 		contents_updated()
 
-func on_item_drop(source_stack: Types.ResourceStack, source_obj: ItemStack):
+func on_item_drop(source_stack: ItemStackResource, source_obj: ItemStack):
 	if source_obj not in itemstack_objects and allow_drop:
 		var stack = source_stack.duplicate()
 		contents.append(stack)
@@ -148,7 +148,7 @@ func consolidate():
 	
 	contents.clear()
 	for stack in stacks:
-		contents.append(Types.ResourceStack.new(stack, stacks[stack]))
+		contents.append(ItemStackResource.new(stack, stacks[stack]))
 	
 func contents_updated():
 	for stack in itemstack_objects:
@@ -160,7 +160,7 @@ func contents_updated():
 		append_stack(stack)
 	contents_changed.emit()
 	
-func append_stack(stack: Types.ResourceStack):
+func append_stack(stack: ItemStackResource):
 	var stack_object = stack_resource.instantiate()
 	stack_object.stack = stack.duplicate()
 	itemstack_objects.append(stack_object)
@@ -175,19 +175,19 @@ func append_stack(stack: Types.ResourceStack):
 		return
 
 func add_item(item: Types.Item, qty: int = 1):
-	contents.append(Types.ResourceStack.new(item, qty))
+	contents.append(ItemStackResource.new(item, qty))
 	contents_updated()
 	
 func add_qty(type: Types.Item, qty: int):
 	var contained_stack = stack_of(type)
 	if contained_stack == null:
-		var new_stack = Types.ResourceStack.new(type, qty)
+		var new_stack = ItemStackResource.new(type, qty)
 		contents.append(new_stack)
 	else:
 		contained_stack.qty += qty
 	contents_updated()
 	
-func add_stack(stack: Types.ResourceStack):
+func add_stack(stack: ItemStackResource):
 	var contained_stack = contents.find(stack)
 	if contained_stack == -1:
 		contents.append(stack.duplicate())
@@ -195,8 +195,8 @@ func add_stack(stack: Types.ResourceStack):
 		contained_stack.qty += stack.qty
 	contents_updated()
 
-func take_first_item(qty: int = -1) -> Types.ResourceStack:
-	var taken: Types.ResourceStack = null
+func take_first_item(qty: int = -1) -> ItemStackResource:
+	var taken: ItemStackResource = null
 	if len(contents) > 0:
 		if qty == -1:
 			taken = contents.pop_front()

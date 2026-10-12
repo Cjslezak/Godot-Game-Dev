@@ -1,7 +1,7 @@
 class_name ItemStack
 extends MarginContainer
 
-var stack : Types.ResourceStack
+var stack : ItemStackResource
 var allow_drag = true
 
 signal just_dropped()
@@ -43,8 +43,8 @@ func make_drag_preview():
 	
 	return img
 
-func set_stack(to: Types.ResourceStack):
-	$Image.texture = Globals.ItemTextures[to.type]
+func set_stack(to: ItemStackResource):
+	$Image.texture = to.texture
 	$Qty.text = str(to.qty)
 	tooltip_text = str(Types.Item.keys()[to.type - 1]).capitalize()
 	stack = to

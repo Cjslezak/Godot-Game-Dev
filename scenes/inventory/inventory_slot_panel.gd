@@ -4,7 +4,7 @@ var allow_drops = true
 
 var has_mouse = false
 
-signal item_dropped(dropped_item: Types.ResourceStack, source_object)
+signal item_dropped(dropped_item: ItemStackResource, source_object)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,7 +16,7 @@ func _can_drop_data(_at_position: Vector2, _data: Variant) -> bool:
 	return false
 
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
-	#{"stack": Types.ResourceStack, "source": ItemStack}
+	#{"stack": ItemStackResource, "source": ItemStack}
 	var original_stack: ItemStack = data["source"]
 	item_dropped.emit(original_stack.stack.duplicate(), original_stack)
 

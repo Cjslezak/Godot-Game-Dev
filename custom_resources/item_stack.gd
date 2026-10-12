@@ -1,8 +1,8 @@
 extends Resource
 class_name ItemStackResource
 
-@export var type: Types.Item
-@export var qty: int
+@export var type: Types.Item = Types.Item.CRYSTAL
+@export var qty: int = 1
 
 var texture: Resource:
 	get:

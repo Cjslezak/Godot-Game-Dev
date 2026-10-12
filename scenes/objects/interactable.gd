@@ -2,6 +2,7 @@
 extends Node2D
 class_name Interactable
 
+@export_group("Optional")
 @export var properties: ObjectProperties
 
 var _mouse_over = false
@@ -10,7 +11,7 @@ var destroying: bool = false
 var destruction_timer: Timer
 var destruction_source: Variant
 
-@abstract func _interact(event: InputEvent, interact_from: Variant)
+@abstract func _interact(event: InputEvent, interact_from: Variant) -> void
 
 ## Impliment functionality to execute when the object is destroyed.
 func destroy():

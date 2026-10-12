@@ -15,6 +15,8 @@
 [ext_resource type="Script" uid="uid://cmn5ujc4syrds" path="res://scenes/map/interactable_container.gd" id="13_il0qy"]
 [ext_resource type="Script" uid="uid://b4x16tyyfihmb" path="res://addons/gaea/runtime/scene_nodes/renderers/tilemap_renderer.gd" id="13_rad3p"]
 [ext_resource type="PackedScene" uid="uid://dpsg256vjo6tf" path="res://scenes/objects/casting_circle/casting_circle.tscn" id="14_p1kjr"]
+[ext_resource type="PackedScene" uid="uid://35n7iqxred73" path="res://scenes/inventory/item_world_object/item_object.tscn" id="16_fcqm8"]
+[ext_resource type="Script" uid="uid://brrubl4n3ogmp" path="res://custom_resources/item_stack.gd" id="17_47c3m"]
 
 [sub_resource type="Resource" id="Resource_udxuc"]
 script = ExtResource("5_p7bq3")
@@ -357,6 +359,10 @@ tilemap = NodePath("../MapBaseLayer")
 player = NodePath("../../Player")
 metadata/_custom_type_script = "uid://cn6suvio0k26l"
 
+[sub_resource type="Resource" id="Resource_gtv6t"]
+script = ExtResource("17_47c3m")
+metadata/_custom_type_script = "uid://brrubl4n3ogmp"
+
 [node name="World" type="Node2D" unique_id=1936553143]
 
 [node name="Player" parent="." unique_id=340280217 instance=ExtResource("1_mp5fl")]
@@ -411,5 +417,9 @@ position = Vector2(546, 102)
 
 [node name="CastingCircle" parent="InteractableContainer" unique_id=953475087 instance=ExtResource("14_p1kjr")]
 position = Vector2(687, -77)
+
+[node name="ItemObject" parent="InteractableContainer" unique_id=1949301002 groups=["interactable"] instance=ExtResource("16_fcqm8")]
+position = Vector2(412, 56)
+item = SubResource("Resource_gtv6t")
 
 [connection signal="start_placing_object" from="Player" to="InteractableContainer" method="_on_player_start_placing_object"]

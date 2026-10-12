@@ -179,7 +179,8 @@ func _on_tile_destruction_complete(resource: Types.Item, layer: InteractableLaye
 	mouse_over_tile(layer)
 
 func mouse_over_object(object: Interactable):
-	$UI_Layer/MouseContainer.show_item_texture(object.properties.display_type)
+	if object.properties:
+		$UI_Layer/MouseContainer.show_item_texture(object.properties.display_type)
 
 func mouse_over_tile(layer: InteractableLayer):
 	var tile_pos = layer.local_to_map(layer.get_local_mouse_position())

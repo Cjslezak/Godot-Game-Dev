@@ -1,8 +1,20 @@
 [gd_scene format=3 uid="uid://35n7iqxred73"]
 
 [ext_resource type="Script" uid="uid://dx6mw3fxmkug4" path="res://scenes/inventory/item_world_object/item_object.gd" id="1_n8k4q"]
+[ext_resource type="Texture2D" uid="uid://clpxqnij8w2vc" path="res://icon.svg" id="2_8r3hl"]
 
-[node name="ItemObject" type="Node2D" unique_id=1949301002]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mwuxh"]
+
+[node name="ItemObject" type="Node2D" unique_id=1949301002 groups=["itemWorldObject"]]
 script = ExtResource("1_n8k4q")
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=1904836089]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_8r3hl")
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=1830443598]
+collision_layer = 2
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea" unique_id=1654668777]
+shape = SubResource("RectangleShape2D_mwuxh")

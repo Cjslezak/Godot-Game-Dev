@@ -6,10 +6,10 @@
 [ext_resource type="Script" uid="uid://7l500u32wmjd" path="res://custom_resources/crafting_recipe.gd" id="3_cvky2"]
 [ext_resource type="PackedScene" uid="uid://b1q7j8ok3o0mr" path="res://scenes/inventory/InventoryPassHandler.tscn" id="3_h68y2"]
 [ext_resource type="Resource" uid="uid://crkjaktprjk4p" path="res://custom_resources/crafting_recipes/casting_circle/casting_circle.tres" id="4_cvky2"]
-[ext_resource type="PackedScene" uid="uid://ds5ixlqvc5w" path="res://scenes/inventory/CraftProgressBar.tscn" id="4_lk5l5"]
+[ext_resource type="PackedScene" uid="uid://ds5ixlqvc5w" path="res://scenes/inventory/craft_handler/CraftProgressBar.tscn" id="4_lk5l5"]
 [ext_resource type="Resource" uid="uid://ci5q3yhdkjcop" path="res://custom_resources/crafting_recipes/casting_circle/pylon.tres" id="5_73u7c"]
 [ext_resource type="PackedScene" uid="uid://dl7o8mfeex3t" path="res://scenes/inventory/InventoryHandler.tscn" id="5_cvky2"]
-[ext_resource type="PackedScene" uid="uid://flspi6f57g5p" path="res://scenes/inventory/CraftHandler.tscn" id="6_73u7c"]
+[ext_resource type="PackedScene" uid="uid://flspi6f57g5p" path="res://scenes/inventory/craft_handler/CraftHandler.tscn" id="6_73u7c"]
 
 [sub_resource type="Resource" id="Resource_73u7c"]
 script = ExtResource("2_gjog0")

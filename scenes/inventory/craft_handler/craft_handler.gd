@@ -2,26 +2,26 @@ extends Node
 class_name CraftHandler
 
 @export var recipes: Array[CraftingRecipe]
-@export var input_inventory_handler: NodePath
-@export var output_inventory_handler: NodePath
-@export var recipe_selection_grid: NodePath
+@export_node_path("InventoryHandler") var input_inventory_handler: NodePath
+@export_node_path("InventoryHandler") var output_inventory_handler: NodePath
+@export_node_path("GridContainer") var recipe_selection_grid: NodePath
 
 @export_category("Optional Controls")
-@export var progress_bar_path: NodePath
-@export var start_button_path: NodePath
+@export_node_path("ProgressBar") var progress_bar_path: NodePath
+@export_node_path("BaseButton") var start_button_path: NodePath
 
 @onready var input_inventory: InventoryHandler = get_node(input_inventory_handler)
 @onready var output_inventory: InventoryHandler = get_node(output_inventory_handler)
 @onready var recipe_grid: GridContainer = get_node(recipe_selection_grid)
 
-var progress_bar: CraftProgressBar
+var progress_bar: ProgressBar
 var start_button: Button
 var selected_recipe: CraftingRecipe
-var remaining_time: float:
-	get:
-		return $Timer.time_left
-var in_progress: bool = false
+var craft_tweener: Tween
 var recipe_slots: Array[InventorySlot]
+
+var in_progress: bool = false
+var percent_complete: float = 0.0
 
 signal craft_completed(recipe: CraftingRecipe)
 
@@ -45,7 +45,6 @@ func _ready():
 	
 	if not progress_bar_path.is_empty():
 		progress_bar = get_node(progress_bar_path)
-		progress_bar.set_timer($Timer)
 	
 	set_recipes()
 	
@@ -66,14 +65,23 @@ func start_craft() -> CraftingRecipe:
 				return null
 			
 		in_progress = true
+		percent_complete = 0.0
+
+		craft_tweener = create_tween()
 		
-		$Timer.start(selected_recipe.time)
+		craft_tweener.tween_property(self, "percent_complete", 100.0, selected_recipe.time)
+		craft_tweener.tween_callback(on_craft_complete)
+		
 		if progress_bar != null:
-			progress_bar.set_process(true)
+			progress_bar.value = 0.0
+			var progress_tween = progress_bar.create_tween()
+			progress_tween.tween_property(progress_bar, "value", 100.0, selected_recipe.time)
+			progress_tween.tween_callback(func (): progress_bar.value = 0.0)
+			
 		return selected_recipe
 	return null
 
-func _on_timer_timeout() -> void:
+func on_craft_complete() -> void:
 	in_progress = false
 	craft_completed.emit(selected_recipe)
 	for i in selected_recipe.results:

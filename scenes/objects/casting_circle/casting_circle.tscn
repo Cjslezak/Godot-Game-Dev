@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://7l500u32wmjd" path="res://custom_resources/crafting_recipe.gd" id="3_cvky2"]
 [ext_resource type="PackedScene" uid="uid://b1q7j8ok3o0mr" path="res://scenes/inventory/InventoryPassHandler.tscn" id="3_h68y2"]
 [ext_resource type="Resource" uid="uid://crkjaktprjk4p" path="res://custom_resources/crafting_recipes/casting_circle/casting_circle.tres" id="4_cvky2"]
-[ext_resource type="PackedScene" uid="uid://ds5ixlqvc5w" path="res://scenes/inventory/craft_handler/CraftProgressBar.tscn" id="4_lk5l5"]
 [ext_resource type="Resource" uid="uid://ci5q3yhdkjcop" path="res://custom_resources/crafting_recipes/casting_circle/pylon.tres" id="5_73u7c"]
 [ext_resource type="PackedScene" uid="uid://dl7o8mfeex3t" path="res://scenes/inventory/InventoryHandler.tscn" id="5_cvky2"]
 [ext_resource type="PackedScene" uid="uid://flspi6f57g5p" path="res://scenes/inventory/craft_handler/CraftHandler.tscn" id="6_73u7c"]
@@ -33,7 +32,7 @@ recipes = Array[ExtResource("3_cvky2")]([ExtResource("4_cvky2"), ExtResource("5_
 input_inventory_handler = NodePath("../InputSlotsHandler")
 output_inventory_handler = NodePath("../OutputSlotsHandler")
 recipe_selection_grid = NodePath("../InventoryPassHandler/TabContainer/Select Recipe/RecipeGrid")
-progress_bar_path = NodePath("../InventoryPassHandler/TabContainer/Crafting/HBoxContainer/CraftProgressBar")
+progress_bar_path = NodePath("../InventoryPassHandler/TabContainer/Crafting/HBoxContainer/ProgressBar")
 start_button_path = NodePath("../InventoryPassHandler/TabContainer/Crafting/Button")
 
 [node name="InputSlotsHandler" parent="." unique_id=1104222237 groups=["inventoryHandler"] instance=ExtResource("5_cvky2")]
@@ -78,7 +77,7 @@ layout_mode = 2
 [node name="GridContainer" type="GridContainer" parent="InventoryPassHandler/TabContainer/Crafting/HBoxContainer" unique_id=1679779185]
 layout_mode = 2
 
-[node name="CraftProgressBar" parent="InventoryPassHandler/TabContainer/Crafting/HBoxContainer" unique_id=435555979 instance=ExtResource("4_lk5l5")]
+[node name="ProgressBar" type="ProgressBar" parent="InventoryPassHandler/TabContainer/Crafting/HBoxContainer" unique_id=41514798]
 layout_mode = 2
 
 [node name="GridContainer2" type="GridContainer" parent="InventoryPassHandler/TabContainer/Crafting/HBoxContainer" unique_id=1615550659]

@@ -1,8 +1,0 @@
-[gd_scene format=3 uid="uid://ds5ixlqvc5w"]
-
-[ext_resource type="Script" uid="uid://cx0dotykrohmv" path="res://scenes/inventory/craft_handler/craft_progress_bar.gd" id="1_3cty5"]
-
-[node name="CraftProgressBar" type="ProgressBar" unique_id=435555979]
-custom_minimum_size = Vector2(100, 0)
-size_flags_vertical = 4
-script = ExtResource("1_3cty5")

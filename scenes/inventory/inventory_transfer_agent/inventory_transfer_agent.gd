@@ -20,7 +20,6 @@ var source_inventory: InventoryHandler
 var dest_inventory: InventoryHandler
 var connecting_source: bool = false
 var connecting_dest: bool = false
-var item_sprites: Array[ItemWorldObject] = []
 
 var source_coords: Vector2:
 	get:
@@ -121,8 +120,6 @@ func item_transfer_triggered():
 				var item: ItemWorldObject = load("res://scenes/inventory/item_world_object/item_object.tscn").instantiate()
 				item.item = taken_item
 				item.global_position = source_coords
-				item_sprites.append(item)
-				item.picked_up.connect(item_transfer_interrupted.bind(item))
 				var tween = item.create_tween()
 				tween.tween_property(item, "global_position", get_parent().global_position, transfer_animation_sec)
 				tween.tween_property(item, "global_position", dest_coords, transfer_animation_sec)
@@ -131,10 +128,6 @@ func item_transfer_triggered():
 			else:
 				dest_inventory.add_stack(taken_item)
 
-func item_transfer_interrupted(item: ItemWorldObject):
-	item_sprites.erase(item)
-
 func item_transfer_complete(item: ItemWorldObject):
 	dest_inventory.add_stack(item.item)
 	item.queue_free()
-	item_sprites.erase(item)

@@ -4,9 +4,3 @@
 
 [node name="CraftHandler" type="Node" unique_id=525796048]
 script = ExtResource("1_70k6u")
-
-[node name="Timer" type="Timer" parent="." unique_id=1475839313]
-one_shot = true
-ignore_time_scale = true
-
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -16,10 +16,12 @@ const ItemTextures: Dictionary[Types.Item, Resource] = {
 	Types.Item.PYLON: preload("res://pixel_art/Pixel Orb.png")
 }
 const PlacementTextures: Dictionary[Types.Item, Resource] = {
-	Types.Item.CASTING_CIRCLE: preload("res://pixel_art/Pixel Pentagram.png")
+	Types.Item.CASTING_CIRCLE: preload("res://pixel_art/Pixel Pentagram.png"),
+	Types.Item.PYLON: preload("res://pixel_art/Pixel Pylon.png")
 }
 const StructureFiles: Dictionary[Types.Item, PackedScene] = {
-	Types.Item.CASTING_CIRCLE: preload("res://scenes/objects/casting_circle/casting_circle.tscn")
+	Types.Item.CASTING_CIRCLE: preload("res://scenes/objects/casting_circle/casting_circle.tscn"),
+	Types.Item.PYLON: preload("res://scenes/objects/pylon/pylon.tscn")
 }
 
 func current_hotbar_action(event: InputEvent) -> Variant:

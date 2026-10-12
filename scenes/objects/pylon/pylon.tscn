@@ -23,7 +23,7 @@ metadata/_custom_type_script = "uid://daqxd2j0y1xeu"
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwuxh"]
 radius = 26.0
 
-[node name="Pylon" type="Node2D" unique_id=1830958759]
+[node name="Pylon" type="Node2D" unique_id=1830958759 groups=["destructable"]]
 script = ExtResource("1_qdrfa")
 orb_texture = SubResource("CompressedTexture2D_qfd15")
 properties = SubResource("Resource_y5fs1")

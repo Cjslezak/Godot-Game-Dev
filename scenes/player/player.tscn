@@ -113,6 +113,7 @@ layout_mode = 2
 grid_container = NodePath("../InventoryWindow/PanelContainer/MarginContainer/InventoryLayout/GridInventory")
 initial_contents = Dictionary[int, int]({
 1: 50,
+2: 50,
 3: 1
 })
 

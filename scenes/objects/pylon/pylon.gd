@@ -24,3 +24,6 @@ func _on_button_set_destination_pressed() -> void:
 
 func _on_inventory_transfer_agent_connection_complete() -> void:
 	Globals.inventory_popup_requested.emit($InventoryPassHandler)
+
+func destroy():
+	queue_free()

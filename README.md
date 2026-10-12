@@ -18,8 +18,8 @@ Put any random ideas in this section.
 - [x] Crafting Handlers 
 - [ ] Optimize Object UI System
 - [x] Inventory Agents 
-- [ ] Item World Objects
-- [ ] Item Transporters
+- [x] Item World Objects
+- [x] Item Transporters
 - [ ] Unlocks System
 - [ ] NPC System
 

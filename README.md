@@ -21,7 +21,7 @@ Change all loading bars to use tweeners with callbacks instead of dedicated time
 - [ ] Optimize Object UI System
 - [x] Inventory Agents 
 - [ ] Item World Objects
-- [ ] Item Transporters
+- [x] Item Transporters
 - [ ] Unlocks System
 - [ ] NPC System
 

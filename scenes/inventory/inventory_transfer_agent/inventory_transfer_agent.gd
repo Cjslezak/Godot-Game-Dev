@@ -20,7 +20,7 @@ var source_inventory: InventoryHandler
 var dest_inventory: InventoryHandler
 var connecting_source: bool = false
 var connecting_dest: bool = false
-var item_sprites: Dictionary[Sprite2D, ItemStackResource] = {}
+var item_sprites: Array[ItemWorldObject] = []
 
 var source_coords: Vector2:
 	get:
@@ -115,24 +115,26 @@ func item_transfer_triggered():
 			dest_inventory = find_object_inventory(dest_inventory_path)
 			
 	if source_inventory and dest_inventory and $Connector.is_all_in_range():
-		var taken_item = source_inventory.take_first_item(1)
+		var taken_item: ItemStackResource = source_inventory.take_first_item(1)
 		if taken_item:
 			if animate_items:
-				var sprite = Sprite2D.new()
-				sprite.texture = Globals.ItemTextures[taken_item.type]
-				sprite.global_position = source_coords
-				var scale_vect = Vector2(50, 50) / sprite.get_rect().size
-				item_sprites[sprite] = taken_item
-				var tween = sprite.create_tween()
-				tween.tween_property(sprite, "global_position", get_parent().global_position, transfer_animation_sec)
-				tween.tween_property(sprite, "global_position", dest_coords, transfer_animation_sec)
-				tween.tween_callback(item_transfer_complete.bind(sprite))
-				sprite.apply_scale(scale_vect)
-				add_child(sprite)
+				var item: ItemWorldObject = load("res://scenes/inventory/item_world_object/item_object.tscn").instantiate()
+				item.item = taken_item
+				item.global_position = source_coords
+				item_sprites.append(item)
+				item.picked_up.connect(item_transfer_interrupted.bind(item))
+				var tween = item.create_tween()
+				tween.tween_property(item, "global_position", get_parent().global_position, transfer_animation_sec)
+				tween.tween_property(item, "global_position", dest_coords, transfer_animation_sec)
+				tween.tween_callback(item_transfer_complete.bind(item))
+				add_child(item)
 			else:
 				dest_inventory.add_stack(taken_item)
 
-func item_transfer_complete(sprite: Sprite2D):
-	dest_inventory.add_stack(item_sprites[sprite])
-	sprite.queue_free()
-	item_sprites.erase(sprite)
+func item_transfer_interrupted(item: ItemWorldObject):
+	item_sprites.erase(item)
+
+func item_transfer_complete(item: ItemWorldObject):
+	dest_inventory.add_stack(item.item)
+	item.queue_free()
+	item_sprites.erase(item)

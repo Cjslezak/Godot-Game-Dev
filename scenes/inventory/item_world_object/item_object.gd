@@ -1,7 +1,10 @@
 extends Interactable
+class_name ItemWorldObject
 
 @export var item: ItemStackResource
 @export var sprite_size: Vector2 = Vector2(50, 50)
+
+signal picked_up()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -14,4 +17,5 @@ func _interact(event: InputEvent, interact_from: Variant):
 	var player = interact_from as Player
 	if event.is_action_pressed("select_object"):
 		player.on_gather_resource(item.type, item.qty)
+		picked_up.emit()
 		queue_free()

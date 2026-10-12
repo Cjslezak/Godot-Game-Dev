@@ -79,6 +79,8 @@ layout_mode = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="InventoryPassHandler/TabContainer/Crafting/HBoxContainer" unique_id=41514798]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
 
 [node name="GridContainer2" type="GridContainer" parent="InventoryPassHandler/TabContainer/Crafting/HBoxContainer" unique_id=1615550659]
 layout_mode = 2

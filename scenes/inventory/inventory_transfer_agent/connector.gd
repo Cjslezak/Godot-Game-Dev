@@ -5,7 +5,8 @@ var animate_connector: bool = true
 var redraw_each_frame: bool = false
 
 var connected_objects: Array[Node2D] = [null, null, null]
-var connector_color: Color = Color(0.765, 0.349, 0.925, 1.0)
+var src_connector_color: Color = Color(0.502, 0.503, 0.963, 1.0)
+var dest_connector_color: Color = Color(0.916, 0.355, 0.352, 1.0)
 var connector_range: int = 5
 
 func connect_to(object: Node2D, index: int):
@@ -29,13 +30,13 @@ func _draw():
 				draw_line(
 					to_local(connected_objects[0].global_position),
 					to_local(connected_objects[1].global_position), 
-					connector_color)
+					src_connector_color)
 		if connected_objects[1] and connected_objects[2]:
 			if is_in_range(connected_objects[1], connected_objects[2]):
 				draw_line(
 					to_local(connected_objects[1].global_position),
 					to_local(connected_objects[2].global_position), 
-					connector_color)
+					dest_connector_color)
 
 func is_all_in_range() -> bool:
 	for obj in connected_objects:

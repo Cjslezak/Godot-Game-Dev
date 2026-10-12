@@ -35,12 +35,12 @@ recipe_selection_grid = NodePath("../InventoryPassHandler/TabContainer/Select Re
 progress_bar_path = NodePath("../InventoryPassHandler/TabContainer/Crafting/HBoxContainer/ProgressBar")
 start_button_path = NodePath("../InventoryPassHandler/TabContainer/Crafting/Button")
 
-[node name="InputSlotsHandler" parent="." unique_id=1104222237 groups=["inventoryHandler"] instance=ExtResource("5_cvky2")]
+[node name="InputSlotsHandler" parent="." unique_id=1104222237 groups=["destInventoryHandler"] instance=ExtResource("5_cvky2")]
 grid_container = NodePath("../InventoryPassHandler/TabContainer/Crafting/HBoxContainer/GridContainer")
 columns = 1
 inventory_size = 3
 
-[node name="OutputSlotsHandler" parent="." unique_id=1497643403 instance=ExtResource("5_cvky2")]
+[node name="OutputSlotsHandler" parent="." unique_id=1497643403 groups=["sourceInventoryHandler"] instance=ExtResource("5_cvky2")]
 grid_container = NodePath("../InventoryPassHandler/TabContainer/Crafting/HBoxContainer/GridContainer2")
 columns = 1
 inventory_size = 3

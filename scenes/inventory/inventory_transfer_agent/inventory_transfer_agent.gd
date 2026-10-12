@@ -45,7 +45,7 @@ func _ready():
 	$Connector.animate_items = animate_items
 	$Connector.animate_connector = animate_connector
 	$Connector.redraw_each_frame = redraw_each_frame
-	$Connector.connector_color = connector_color
+	#$Connector.connector_color = connector_color
 	$Connector.connector_range = transfer_tile_range
 	
 	$Connector.connect_to(get_parent(), 1)
@@ -86,32 +86,32 @@ func _input(event: InputEvent) -> void:
 func transfer_item():
 	$Timer.start()
 
-## Find the inventory handler for a target nodepath
-func find_object_inventory(object_path: NodePath) -> InventoryHandler:
-	var object = get_node(object_path)
-	for child in object.get_children():
-		if child.is_in_group(&"inventoryHandler"):
-			return child
-	return null
-
 ## Takes the path to an object that contains an inventory handler.
 func set_source_inventory(inventory: NodePath):
-	source_inventory = find_object_inventory(inventory)
-	$Connector.connect_to(get_node(inventory), 0)
+	var object = get_node(inventory)
+	for child in object.get_children():
+		if child.is_in_group(&"sourceInventoryHandler"):
+			source_inventory = child
+			$Connector.connect_to(get_node(inventory), 0)
+			return
 
 ## Takes the path to an object that contains an inventory handler.
 func set_dest_inventory(inventory: NodePath):
-	dest_inventory = find_object_inventory(inventory)
-	$Connector.connect_to(get_node(inventory), 2)
+	var object = get_node(inventory)
+	for child in object.get_children():
+		if child.is_in_group(&"destInventoryHandler"):
+			dest_inventory = child
+			$Connector.connect_to(get_node(inventory), 2)
+			return
 
 ## Begin item transfer process. Should be called by timer.
 func item_transfer_triggered():
 	if source_inventory == null:
 		if not source_inventory_path.is_empty():
-			source_inventory = find_object_inventory(source_inventory_path)
+			set_source_inventory(source_inventory_path)
 	if dest_inventory == null:
 		if not dest_inventory_path.is_empty():
-			dest_inventory = find_object_inventory(dest_inventory_path)
+			set_dest_inventory(dest_inventory_path)
 			
 	if source_inventory and dest_inventory and $Connector.is_all_in_range():
 		var taken_item: ItemStackResource = source_inventory.take_first_item(1)

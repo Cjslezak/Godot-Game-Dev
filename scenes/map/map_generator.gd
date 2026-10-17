@@ -13,29 +13,33 @@ extends Node
 @export var generate_on_load: bool = true
 
 @export_group("Generation Settings")
-@export_range(-1.0, 1.0, 0.0001) var test_threshold: float = 0.02
+@export var generation_layers: Array[GenerationLayer] = []
 @export var noise_map_image: Image = Image.new():
 	get:
 		return noise_map_image
-
-@export var threshold_map_image: BitMap = BitMap.new():
-	get:
-		return threshold_map_image
+@export var threshold_map_images: Array[BitMap] = []
 
 var bg_tilemap: TileMapLayer
 var fg_tilemap: TileMapLayer
 var player: Player
+var noise_map: FastNoiseLite
 
 var chunk_queue: Array[Vector2i] = []
 var loaded_chunks: Array[Vector2i] = []
-var noise_map: FastNoiseLite
+var last_updated_pos: Vector2 = Vector2(0, 0)
 
 var process_calls: Array[Callable] = []
 
 func _ready() -> void:
+	player = get_node(player_path)
+	bg_tilemap = get_node(background_tilemap_path)
+	fg_tilemap = get_node(interactable_tilemap_path)
+	
+	noise_map = FastNoiseLite.new()
+	noise_map.seed = RandomNumberGenerator.new().randi()
+	noise_map.noise_type = FastNoiseLite.TYPE_PERLIN
 	if generate_on_load:
-		#generate()
-		pass
+		generate()
 
 ## use a single input lambda function to return an image result from the noise map.
 func bitmap_from_mapping(threshold: Callable) -> BitMap:
@@ -57,14 +61,7 @@ func bitmap_from_mapping(threshold: Callable) -> BitMap:
 	return data
 
 func generate():
-	bg_tilemap = get_node(background_tilemap_path)
-	fg_tilemap = get_node(interactable_tilemap_path)
 	bg_tilemap.clear()
-	player = get_node(player_path)
-	
-	noise_map = FastNoiseLite.new()
-	noise_map.seed = RandomNumberGenerator.new().randi()
-	noise_map.noise_type = FastNoiseLite.TYPE_PERLIN
 	
 	var data = PackedFloat32Array()
 	var max = -999
@@ -86,9 +83,10 @@ func generate():
 		chunk_size.x * generate_range * 2 + chunk_size.x,
 		chunk_size.y * generate_range * 2 + chunk_size.y,
 		false, Image.FORMAT_L8, bytes)
-	
-	threshold_map_image = bitmap_from_mapping(func(x): return x > test_threshold)
-	
+	var imgs: Array[BitMap] = []
+	for gen: GenerationLayer in generation_layers:
+		imgs.append(bitmap_from_mapping(func(x): return x > gen.threshold))
+	threshold_map_images = imgs
 	loaded_chunks = []
 	
 	var temp = get_chunks_near_player()
@@ -97,28 +95,43 @@ func generate():
 		for chunk in temp:
 			if chunk not in loaded_chunks:
 				chunk_queue.append(chunk)
-				
+	
+	last_updated_pos = player.global_position
 	process_calls.append(generation_function)
 	
 func generation_function():
 	var coords = chunk_queue.pop_front()
 
 	if coords != null:
-		var tiles1: Array[Vector2i] = []
-		var tiles2: Array[Vector2i] = []
+		var tiles: Array[Array] = []
+		
+		for gen: GenerationLayer in generation_layers: 
+			tiles.append([])
+			
 		for x in range(chunk_size.x + 1):
 			for y in range(chunk_size.y + 1):
 				var local_coords: Vector2i = Vector2i(x, y)
 				var tile_coords: Vector2i = local_coords + (coords * chunk_size)
 				var n = noise_map.get_noise_2dv(tile_coords)
-				if n > test_threshold:
-					tiles1.append(tile_coords)
-				else:
-					tiles2.append(tile_coords)
-		process_calls.append(bg_tilemap.set_cells_terrain_connect.bind(tiles1, 0, 0, false))
-		process_calls.append(bg_tilemap.set_cells_terrain_connect.bind(tiles2, 0, 1, false))
+				var layer_idx = -1
+				var highest_match = -99.0
+				for idx in generation_layers.size():
+					var gen: GenerationLayer = generation_layers[idx]
+					if n > gen.threshold and gen.threshold > highest_match:
+						layer_idx = idx
+						highest_match = gen.threshold
+				if layer_idx != -1:
+					tiles[layer_idx].append(tile_coords)
+				
+		for index in generation_layers.size():
+			var gen: GenerationLayer = generation_layers[index]
+			var layer: TileMapLayer = get_node(gen.layer_path)
+			process_calls.append(
+				layer.set_cells_terrain_connect.bind(
+					tiles[index], gen.terrain_set, gen.terrain_index, false))
+		loaded_chunks.append(coords)
 		if len(chunk_queue) > 0:
-			process_calls.insert(0, generation_function)
+			process_calls.append(generation_function)
 		
 func get_chunks_near_player() -> Array[Vector2i]:
 	var player_pos: Vector2i = bg_tilemap.local_to_map(bg_tilemap.to_local(player.global_position))
@@ -134,3 +147,15 @@ func _process(delta: float) -> void:
 	var c = process_calls.pop_front()
 	if c != null:
 		c.call()
+	
+	if not Engine.is_editor_hint():
+		if (Globals.scaled_as_tile(player.global_position) - last_updated_pos).length() > chunk_size.x:
+			var temp = get_chunks_near_player()
+			if len(temp) > 0:
+				for chunk in temp:
+					if chunk not in loaded_chunks and chunk not in chunk_queue:
+						chunk_queue.append(chunk)
+				last_updated_pos = Globals.scaled_as_tile(player.global_position)
+				print(last_updated_pos)
+			if generation_function not in process_calls:
+				process_calls.append(generation_function)

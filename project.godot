@@ -36,7 +36,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gaea/editor/plugin.cfg", "res://addons/gaea/plugin.cfg", "res://addons/gaea/runtime/plugin.cfg", "res://addons/gitot/plugin.cfg")
+enabled=PackedStringArray("res://addons/gitot/plugin.cfg")
 
 [file_customization]
 
@@ -46,10 +46,6 @@ folder_colors={
 "res://pixel_art/": "purple",
 "res://scenes/": "green"
 }
-
-[gaea]
-
-nodes/custom_nodes_path="res://custom_nodes"
 
 [global_group]
 
